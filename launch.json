@@ -1,0 +1,26 @@
+// Configuração de depuração para um projeto C++ no Visual Studio Code
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug Project",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/main.exe", // Caminho para o executável
+            "args": [], // Argumentos para o programa, se necessário
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}", // Diretório de trabalho
+            "environment": [],
+            "externalConsole": true, // Usar console externo para entrada/saída
+            "MIMode": "gdb",
+            "miDebuggerPath": "C:/msys64/ucrt64/bin/gdb.exe", // Caminho para o GDB (ajuste conforme necessário)
+            "setupCommands": [
+                {
+                    "description": "Habilitar formatação para gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
+        }
+    ]
+}

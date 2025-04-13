@@ -1,0 +1,42 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "type": "process",
+            "label": "Build Project",
+            "command": "g++",
+            "args": [
+                "-std=c++17",
+                "-IC:/msys64/mingw64/include/opencv4", // Caminho para os headers do OpenCV
+                "-LC:/msys64/mingw64/lib", // Caminho para as bibliotecas do OpenCV
+                "-lopencv_core",
+                "-lopencv_imgproc",
+                "-lopencv_imgcodecs",
+                "-lopencv_highgui",
+                "-lopencv_videoio",
+                "-o",
+                "${workspaceFolder}/main.exe",
+                "${workspaceFolder}/main.cpp"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": {
+                "owner": "cpp",
+                "fileLocation": ["relative", "${workspaceFolder}"],
+                "pattern": {
+                    "regexp": "^(.*):(\\d+):(\\d+):\\s+(warning|error):\\s+(.*)$",
+                    "file": 1,
+                    "line": 2,
+                    "column": 3,
+                    "severity": 4,
+                    "message": 5
+                }
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }
+    ]
+}

@@ -1,0 +1,3 @@
+C:/Projetos/TPProject/CMakeBuild/CMakeFiles/moedas.dir
+C:/Projetos/TPProject/CMakeBuild/CMakeFiles/edit_cache.dir
+C:/Projetos/TPProject/CMakeBuild/CMakeFiles/rebuild_cache.dir

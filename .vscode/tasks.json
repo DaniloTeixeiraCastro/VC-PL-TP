@@ -1,0 +1,56 @@
+/* {
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build-opencv-moedas",
+      "type": "shell",
+      "command": "g++",
+      "args": [
+        "main.cpp",
+        "vc.c",
+        "-std=c++17",
+        "-IC:/vcpkg/installed/x64-mingw-static/include/opencv4",
+        "-IC:/vcpkg/installed/x64-mingw-static/include/opencv4/opencv2",
+        "-LC:/vcpkg/installed/x64-mingw-static/lib",
+        "-lopencv_core4",
+        "-lopencv_highgui4",
+        "-lopencv_imgproc4",
+        "-lopencv_videoio4",
+        "-o",
+        "main.exe"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": ["$gcc"]
+    }
+  ]
+} */
+
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build-cmake-moedas",
+      "type": "shell",
+      "command": "cmake",
+      "args": [
+        "--build",
+        "CMakeBuild",
+        "--clean-first"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": ["$gcc"]
+    }
+  ]
+}

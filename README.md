@@ -64,13 +64,23 @@ OpenCV 4 (instalado via vcpkg)
 
 .\vcpkg install opencv4:x64-mingw-dynamic
 
-3. Clona ou descarrega este repositório.
+3. Clona ou descarrega este repositório em:
 
+Estrutura dos Ficheiros:
+
+C:\Projetos\TPProject\
+│   main.cpp
+│   vc.h
+│   vc.c
+│   video1.mp4
+│
+└───CMakeBuild\
 
 
    📚 Guia de Instalação
 
-Pré-requisitos
+Pré-requisitos:
+
 Sistema Operativo: Windows 10 ou superior
 
 Compilador: MinGW-w64 (64 bits)
@@ -87,7 +97,8 @@ Terminal: PowerShell ou Command Prompt
 
 🛠 Instalação Passo a Passo
 
-1. Instalar o MinGW-w64
+1. Instalar o MinGW-w64:
+   
 Acede a: https://winlibs.com/
 
 Baixa a versão mais recente do MinGW-w64 (x86_64-posix-seh).
@@ -124,16 +135,26 @@ Nota: usa sempre o :x64-mingw-dynamic para ser compatível com o teu MinGW.
 1. No terminal:
 
 cmake -S . -B cmakebuild -G "MinGW Makefiles" `
->>   -DCMAKE_C_COMPILER=C:/msys64/mingw64/bin/gcc.exe `
->>   -DCMAKE_CXX_COMPILER=C:/msys64/mingw64/bin/g++.exe `
->>   -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake `
->>   -DVCPKG_TARGET_TRIPLET=x64-mingw-dynamic
+  -DCMAKE_C_COMPILER=C:/msys64/mingw64/bin/gcc.exe `
+  -DCMAKE_CXX_COMPILER=C:/msys64/mingw64/bin/g++.exe `
+  -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake `
+  -DVCPKG_TARGET_TRIPLET=x64-mingw-dynamic
 
 cmake --build cmakebuild --clean-first
+
+
+
+
 
 2. Antes de correr o executável:
 
 $env:PATH="C:\vcpkg\installed\x64-mingw-dynamic\bin;$env:PATH"
+
+Resolver DLL faltando:
+
+Você precisa copiar as DLLs necessárias (por exemplo, avcodec-*.dll, avformat-*.dll, opencv_*.dll, etc.) do C:/vcpkg/installed/x64-mingw-dynamic/bin/ para o diretório onde está o seu moedas.exe (cmakebuild/).
+Alternativa: Existe uma pasta DLLs com todas as dll necessárias - copiar todas para dentro da pasta cmakebuild.
+
 
 3. Executar:
 

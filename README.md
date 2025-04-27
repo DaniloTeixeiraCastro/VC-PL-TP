@@ -40,52 +40,46 @@ Este projeto implementa um sistema de detecção e quantificação de moedas em 
 ## Como Usar
 
 📦 Requisitos
+
 Windows 10/11
+
 MinGW-w64
+
 CMake
+
 vcpkg
+
 OpenCV 4 (instalado via vcpkg)
 
 🛠 Instalação
-Instala MinGW, CMake e vcpkg conforme o Guia de Instalação.
+1. Instala MinGW, CMake e vcpkg conforme o Guia de Instalação.
 
-Instala OpenCV:
+2. Instala OpenCV:
 
-bash
-Copiar
-Editar
 .\vcpkg install opencv4:x64-mingw-dynamic
-Clona ou descarrega este repositório.
+3. Clona ou descarrega este repositório.
 
 ⚙️ Configuração e Build
-No terminal:
 
-bash
-Copiar
-Editar
-cd TPProject
-cmake -B cmakebuild -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake -DCMAKE_BUILD_TYPE=Release
+1. No terminal:
+
+cmake -S . -B cmakebuild -G "MinGW Makefiles" `
+>>   -DCMAKE_C_COMPILER=C:/msys64/mingw64/bin/gcc.exe `
+>>   -DCMAKE_CXX_COMPILER=C:/msys64/mingw64/bin/g++.exe `
+>>   -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake `
+>>   -DVCPKG_TARGET_TRIPLET=x64-mingw-dynamic
+
 cmake --build cmakebuild --clean-first
-Antes de correr o executável:
 
-bash
-Copiar
-Editar
+2. Antes de correr o executável:
+
 $env:PATH="C:\vcpkg\installed\x64-mingw-dynamic\bin;$env:PATH"
-Executar:
 
-bash
-Copiar
-Editar
+3. Executar:
+
 cd cmakebuild
 .\moedas.exe
 
-🎯 Funcionalidades
-Detecção automática de moedas em vídeos.
-
-Segmentação da imagem via filtro Gaussiano e binarização adaptativa.
-
-Cálculo e exibição do número e valor total das moedas detectadas.
 
 🐞 Problemas comuns
 

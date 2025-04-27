@@ -143,10 +143,7 @@ cmake -S . -B cmakebuild -G "MinGW Makefiles" `
 cmake --build cmakebuild --clean-first
 
 
-
-
-
-2. Antes de correr o executável:
+2. Antes de correr o executável, adicionar a path:
 
 $env:PATH="C:\vcpkg\installed\x64-mingw-dynamic\bin;$env:PATH"
 
@@ -156,10 +153,9 @@ Você precisa copiar as DLLs necessárias (por exemplo, avcodec-*.dll, avformat-
 Alternativa: Existe uma pasta DLLs com todas as dll necessárias - copiar todas para dentro da pasta cmakebuild.
 
 
-3. Executar:
+3. Executar (dentro da pasta do projeto - TPProject):
 
-cd cmakebuild
-.\moedas.exe
+.\cmakebuild\moedas.exe
 
 
 🐞 Problemas comuns

@@ -39,6 +39,13 @@ Este projeto implementa um sistema de detecção e quantificação de moedas em 
 
 ## Como Usar
 
+📦 Requisitos
+Windows 10/11
+MinGW-w64
+CMake
+vcpkg
+OpenCV 4 (instalado via vcpkg)
+
 🛠 Instalação
 Instala MinGW, CMake e vcpkg conforme o Guia de Instalação.
 

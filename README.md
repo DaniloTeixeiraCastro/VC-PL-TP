@@ -36,30 +36,56 @@ Este projeto implementa um sistema de detecção e quantificação de moedas em 
 4. **Classificação de Moedas**
    - Algoritmos para distinguir diferentes tipos de moedas com base em suas características
 
+
 ## Como Usar
 
-1. Compile o programa:
-   ```
-   gcc -o detector_moedas main.c vc.c -lopencv_core -lopencv_highgui -lopencv_videoio -lopencv_imgproc
-   ```
+🛠 Instalação
+Instala MinGW, CMake e vcpkg conforme o Guia de Instalação.
 
-2. Execute o programa:
-   ```
-   ./detector_moedas
-   ```
+Instala OpenCV:
 
-3. O programa irá processar o vídeo e exibir os resultados em tempo real.
+bash
+Copiar
+Editar
+.\vcpkg install opencv4:x64-mingw-dynamic
+Clona ou descarrega este repositório.
 
-## Observações para Implementação
+⚙️ Configuração e Build
+No terminal:
 
-- A função `segmentarImagem()` precisa ser ajustada para melhor detectar as moedas nos vídeos fornecidos.
-- A função `detectarMoedas()` deve ser implementada para identificar corretamente os componentes conectados e calcular suas propriedades.
-- Os limiares para classificação das moedas precisam ser calibrados com base nos vídeos fornecidos.
-- Apenas 3 funções do OpenCV são permitidas além das fornecidas no exemplo.
+bash
+Copiar
+Editar
+cd TPProject
+cmake -B cmakebuild -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake -DCMAKE_BUILD_TYPE=Release
+cmake --build cmakebuild --clean-first
+Antes de correr o executável:
 
-## Restrições Técnicas
+bash
+Copiar
+Editar
+$env:PATH="C:\vcpkg\installed\x64-mingw-dynamic\bin;$env:PATH"
+Executar:
 
-- Resolução dos vídeos: 1280x720 pixels
-- Taxa de frames: 30 fps
-- Linguagem: C
-- Biblioteca permitida: OpenCV (máximo 3 funções extras)
+bash
+Copiar
+Editar
+cd cmakebuild
+.\moedas.exe
+
+🎯 Funcionalidades
+Detecção automática de moedas em vídeos.
+
+Segmentação da imagem via filtro Gaussiano e binarização adaptativa.
+
+Cálculo e exibição do número e valor total das moedas detectadas.
+
+🐞 Problemas comuns
+
+Problema	Solução
+Imagem binária branca	Ajustar parâmetros de filtro ou binarização
+Falta de DLLs	Verificar se o PATH inclui vcpkg/bin
+Janela não abre	Verificar instalação do OpenCV e dependências
+
+📄 Licença
+Projeto académico. Uso livre para fins educativos.

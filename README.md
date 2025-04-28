@@ -158,13 +158,6 @@ Alternativa: Existe uma pasta DLLs com todas as dll necessárias - copiar todas 
 .\cmakebuild\moedas.exe
 
 
-🐞 Problemas comuns
-
-Problema	- Solução
-Imagem binária branca	- Ajustar parâmetros de filtro ou binarização
-Falta de DLLs	- Verificar se o PATH inclui vcpkg/bin
-Janela não abre	- Verificar instalação do OpenCV e dependências
-
 
 📄 Licença
 Projeto académico. Uso livre para fins educativos.

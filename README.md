@@ -36,30 +36,128 @@ Este projeto implementa um sistema de detecção e quantificação de moedas em 
 4. **Classificação de Moedas**
    - Algoritmos para distinguir diferentes tipos de moedas com base em suas características
 
+
+
 ## Como Usar
 
-1. Compile o programa:
-   ```
-   gcc -o detector_moedas main.c vc.c -lopencv_core -lopencv_highgui -lopencv_videoio -lopencv_imgproc
-   ```
 
-2. Execute o programa:
-   ```
-   ./detector_moedas
-   ```
+📦 Requisitos
 
-3. O programa irá processar o vídeo e exibir os resultados em tempo real.
 
-## Observações para Implementação
+Windows 10/11
 
-- A função `segmentarImagem()` precisa ser ajustada para melhor detectar as moedas nos vídeos fornecidos.
-- A função `detectarMoedas()` deve ser implementada para identificar corretamente os componentes conectados e calcular suas propriedades.
-- Os limiares para classificação das moedas precisam ser calibrados com base nos vídeos fornecidos.
-- Apenas 3 funções do OpenCV são permitidas além das fornecidas no exemplo.
+MinGW-w64
 
-## Restrições Técnicas
+CMake
 
-- Resolução dos vídeos: 1280x720 pixels
-- Taxa de frames: 30 fps
-- Linguagem: C
-- Biblioteca permitida: OpenCV (máximo 3 funções extras)
+vcpkg
+
+OpenCV 4 (instalado via vcpkg)
+
+
+
+🛠 Instalação
+
+1. Instala MinGW, CMake e vcpkg conforme o Guia de Instalação.
+
+2. Instala OpenCV:
+
+.\vcpkg install opencv4:x64-mingw-dynamic
+
+3. Clona ou descarrega este repositório em:
+
+Estrutura dos Ficheiros:
+
+C:\Projetos\TPProject\
+│   main.cpp
+│   vc.h
+│   vc.c
+│   video1.mp4
+│
+└───CMakeBuild\
+
+
+   📚 Guia de Instalação
+
+Pré-requisitos:
+
+Sistema Operativo: Windows 10 ou superior
+
+Compilador: MinGW-w64 (64 bits)
+
+CMake: para configurar e gerar build
+
+vcpkg: para gerir bibliotecas C/C++ (como OpenCV)
+
+OpenCV: biblioteca principal para processamento de imagem
+
+Terminal: PowerShell ou Command Prompt
+
+
+
+🛠 Instalação Passo a Passo
+
+1. Instalar o MinGW-w64:
+   
+Acede a: https://winlibs.com/
+
+Baixa a versão mais recente do MinGW-w64 (x86_64-posix-seh).
+
+Extrai o zip num diretório simples, como C:\mingw64.
+
+Adiciona o bin ao Path:
+
+Ex: C:\mingw64\bin
+
+2. Instalar o CMake
+Vai a: https://cmake.org/download/
+
+Instala o CMake (marca a opção "Add CMake to system PATH").
+
+3. Instalar o vcpkg
+
+git clone https://github.com/microsoft/vcpkg.git
+cd vcpkg
+.\bootstrap-vcpkg.bat
+
+
+Instala bibliotecas com:
+
+.\vcpkg install opencv4:x64-mingw-dynamic
+
+Nota: usa sempre o :x64-mingw-dynamic para ser compatível com o teu MinGW.
+
+
+
+
+⚙️ Configuração e Build
+
+1. No terminal:
+
+cmake -S . -B cmakebuild -G "MinGW Makefiles" `
+  -DCMAKE_C_COMPILER=C:/msys64/mingw64/bin/gcc.exe `
+  -DCMAKE_CXX_COMPILER=C:/msys64/mingw64/bin/g++.exe `
+  -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake `
+  -DVCPKG_TARGET_TRIPLET=x64-mingw-dynamic
+
+cmake --build cmakebuild --clean-first
+
+
+2. Antes de correr o executável, adicionar a path:
+
+$env:PATH="C:\vcpkg\installed\x64-mingw-dynamic\bin;$env:PATH"
+
+Resolver DLL faltando:
+
+Você precisa copiar as DLLs necessárias (por exemplo, avcodec-*.dll, avformat-*.dll, opencv_*.dll, etc.) do C:/vcpkg/installed/x64-mingw-dynamic/bin/ para o diretório onde está o seu moedas.exe (cmakebuild/).
+Alternativa: Existe uma pasta DLLs com todas as dll necessárias - copiar todas para dentro da pasta cmakebuild.
+
+
+3. Executar (dentro da pasta do projeto - TPProject):
+
+.\cmakebuild\moedas.exe
+
+
+
+📄 Licença
+Projeto académico. Uso livre para fins educativos.

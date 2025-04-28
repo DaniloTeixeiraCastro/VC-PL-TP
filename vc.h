@@ -44,6 +44,8 @@ int vc_rgb_get_blue_channel(IVC* src, IVC* dst);
 // FUNÇÕES: BINARIZAÇÃO
 int vc_gray_to_binary(IVC* src, IVC* dst, int threshold);
 int vc_gray_to_binary_global_mean(IVC* src, IVC* dst);
+int vc_gray_to_binary_adaptive_mean(IVC *src, IVC *dst, int kernel_size, int c);
+int vc_gray_gaussian_blur(IVC *src, IVC *dst);
 
 // FUNÇÕES: OPERAÇÕES MORFOLÓGICAS
 int vc_binary_dilate(IVC* src, IVC* dst, int kernel_size);

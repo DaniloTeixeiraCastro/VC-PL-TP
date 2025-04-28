@@ -56,7 +56,7 @@ EQUALS = =
 CMAKE_SOURCE_DIR = C:\Projetos\TPProject
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = C:\Projetos\TPProject\CMakeBuild
+CMAKE_BINARY_DIR = C:\Projetos\TPProject\cmakebuild
 
 #=============================================================================
 # Directory level rules for the build root directory
@@ -84,14 +84,14 @@ clean: CMakeFiles/moedas.dir/clean
 CMakeFiles/moedas.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\moedas.dir\build.make CMakeFiles/moedas.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\moedas.dir\build.make CMakeFiles/moedas.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=C:\Projetos\TPProject\CMakeBuild\CMakeFiles --progress-num=1,2,3 "Built target moedas"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=C:\Projetos\TPProject\cmakebuild\CMakeFiles --progress-num=1,2,3 "Built target moedas"
 .PHONY : CMakeFiles/moedas.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/moedas.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start C:\Projetos\TPProject\CMakeBuild\CMakeFiles 3
+	$(CMAKE_COMMAND) -E cmake_progress_start C:\Projetos\TPProject\cmakebuild\CMakeFiles 3
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 CMakeFiles/moedas.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start C:\Projetos\TPProject\CMakeBuild\CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start C:\Projetos\TPProject\cmakebuild\CMakeFiles 0
 .PHONY : CMakeFiles/moedas.dir/rule
 
 # Convenience name for target.
@@ -101,7 +101,7 @@ moedas: CMakeFiles/moedas.dir/rule
 # codegen rule for target.
 CMakeFiles/moedas.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\moedas.dir\build.make CMakeFiles/moedas.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=C:\Projetos\TPProject\CMakeBuild\CMakeFiles --progress-num=1,2,3 "Finished codegen for target moedas"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=C:\Projetos\TPProject\cmakebuild\CMakeFiles --progress-num=1,2,3 "Finished codegen for target moedas"
 .PHONY : CMakeFiles/moedas.dir/codegen
 
 # clean rule for target.

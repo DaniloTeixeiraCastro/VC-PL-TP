@@ -1,1 +1,1 @@
--I"C:/vcpkg/installed/x64-mingw-dynamic/include" -isystem "C:/vcpkg/installed/x64-mingw-dynamic/include/opencv4"
+-IC:/Projetos/TPProject/include -isystem "C:/vcpkg/installed/x64-mingw-dynamic/include/opencv4"

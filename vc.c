@@ -325,7 +325,7 @@ int vc_rgb_to_gray(IVC *src, IVC *dst)
             unsigned char g = src->data[pos_src + 1];
             unsigned char b = src->data[pos_src + 2];
 
-            dst->data[pos_dst] = (r * 0.299) + (g * 0.587) + (b * 0.114);
+            dst->data[pos_dst] = (unsigned char)((r * 0.299) + (g * 0.587) + (b * 0.114));
         }
     }
 
@@ -343,7 +343,8 @@ int vc_gray_to_binary_global_mean(IVC *src, IVC *dst)
     for (int i = 0; i < total; i++)
         sum += src->data[i];
 
-    int threshold = sum / total;
+    /* int threshold = sum / total; */
+    int threshold = (sum / total) - 30;
 
     for (int i = 0; i < total; i++)
         dst->data[i] = (src->data[i] >= threshold) ? 255 : 0;
@@ -421,6 +422,73 @@ int vc_binary_erode(IVC *src, IVC *dst, int kernel_size)
             }
 
             dst->data[y * dst->bytesperline + x] = all_white ? 255 : 0;
+        }
+    }
+
+    return 1;
+}
+
+int vc_gray_to_binary_adaptive_mean(IVC *src, IVC *dst, int windowSize, int offset)
+{
+    int halfWindow = windowSize / 2;
+
+    if ((src == NULL) || (dst == NULL)) return 0;
+    if ((src->width != dst->width) || (src->height != dst->height) || (src->channels != 1) || (dst->channels != 1)) return 0;
+
+    for (int y = halfWindow; y < src->height - halfWindow; y++)
+    {
+        for (int x = halfWindow; x < src->width - halfWindow; x++)
+        {
+            int sum = 0;
+            for (int wy = -halfWindow; wy <= halfWindow; wy++)
+            {
+                for (int wx = -halfWindow; wx <= halfWindow; wx++)
+                {
+                    sum += src->data[(y + wy) * src->bytesperline + (x + wx)];
+                }
+            }
+            int area = windowSize * windowSize;
+            int localMean = sum / area;
+
+            int pixel = src->data[y * src->bytesperline + x];
+            dst->data[y * dst->bytesperline + x] = (pixel < (localMean - offset)) ? 0 : 255;
+        }
+    }
+
+    return 1;
+}
+
+
+int vc_gray_gaussian_blur(IVC *src, IVC *dst)
+{
+    int kernelSize = 5;
+    int halfKernel = kernelSize / 2;
+    float gaussianKernel[5][5] = {
+        {1, 4, 7, 4, 1},
+        {4, 16, 26, 16, 4},
+        {7, 26, 41, 26, 7},
+        {4, 16, 26, 16, 4},
+        {1, 4, 7, 4, 1}
+    };
+    float sumKernel = 273.0f;
+
+    if ((src == NULL) || (dst == NULL)) return 0;
+    if ((src->width != dst->width) || (src->height != dst->height) || (src->channels != 1) || (dst->channels != 1)) return 0;
+
+    for (int y = halfKernel; y < src->height - halfKernel; y++)
+    {
+        for (int x = halfKernel; x < src->width - halfKernel; x++)
+        {
+            float sum = 0.0f;
+            for (int ky = -halfKernel; ky <= halfKernel; ky++)
+            {
+                for (int kx = -halfKernel; kx <= halfKernel; kx++)
+                {
+                    int pixel = src->data[(y + ky) * src->bytesperline + (x + kx)];
+                    sum += pixel * gaussianKernel[ky + halfKernel][kx + halfKernel];
+                }
+            }
+            dst->data[y * dst->bytesperline + x] = (unsigned char)(sum / sumKernel);
         }
     }
 

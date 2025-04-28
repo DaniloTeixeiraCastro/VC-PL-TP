@@ -34,23 +34,19 @@
 {
   "version": "2.0.0",
   "tasks": [
-    {
-      "label": "build-cmake-moedas",
-      "type": "shell",
-      "command": "cmake",
-      "args": [
-        "--build",
-        "CMakeBuild",
-        "--clean-first"
-      ],
-      "options": {
-        "cwd": "${workspaceFolder}"
-      },
-      "group": {
-        "kind": "build",
-        "isDefault": true
-      },
-      "problemMatcher": ["$gcc"]
-    }
+      {
+          "label": "CMake Build",
+          "type": "shell",
+          "command": "cmake --build CMakeBuild",
+          "options": {
+              "cwd": "${workspaceFolder}"
+          },
+          "group": {
+              "kind": "build",
+              "isDefault": true
+          },
+          "problemMatcher": ["$gcc"]
+      }
   ]
 }
+

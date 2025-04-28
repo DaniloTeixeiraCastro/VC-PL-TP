@@ -7,11 +7,11 @@ C_DEFINES =
 
 C_INCLUDES = @CMakeFiles/moedas.dir/includes_C.rsp
 
-C_FLAGS = 
+C_FLAGS = -std=gnu11
 
 CXX_DEFINES = 
 
 CXX_INCLUDES = @CMakeFiles/moedas.dir/includes_CXX.rsp
 
-CXX_FLAGS = -std=gnu++17
+CXX_FLAGS = 
 

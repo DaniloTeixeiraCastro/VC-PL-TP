@@ -10,14 +10,17 @@
 #include <filesystem>
 #include <iostream>
 
+extern "C" {
+#include "vc.h"
+}
+
+using namespace std;
+using namespace cv;
+
 // Define M_PI if it's not already defined
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
 #endif
-
-extern "C" {
-#include "vc.h"
-}
 
 // Definição da estrutura InfoMoeda
 struct InfoMoeda {
@@ -187,7 +190,7 @@ int detectarMoedas(IVC* imagem, IVC* imagemBinaria, InfoMoeda* moedas, int maxMo
 }
 
 // Função para segmentar a imagem e isolar as moedas
-void segmentarImagem(IVC* imagemOriginal, IVC* imagemBinaria) {
+/* void segmentarImagem(IVC* imagemOriginal, IVC* imagemBinaria) {
     // Converter para escala de cinza
     IVC* imagemGray = vc_image_new(imagemOriginal->width, imagemOriginal->height, 1, 255);
     vc_rgb_to_gray(imagemOriginal, imagemGray);
@@ -219,7 +222,61 @@ void segmentarImagem(IVC* imagemOriginal, IVC* imagemBinaria) {
     // Limpar memória
     vc_image_free(imagemGray);
     vc_image_free(imagemFiltrada);
+} */
+void segmentarImagem(IVC* imagemOriginal, IVC* imagemBinaria) {
+    // Converter para escala de cinza
+    IVC* imagemGray = vc_image_new(imagemOriginal->width, imagemOriginal->height, 1, 255);
+    vc_rgb_to_gray(imagemOriginal, imagemGray);
+
+    // Aplicar filtro Gaussiano para reduzir ruído
+    IVC* imagemFiltrada = vc_image_new(imagemOriginal->width, imagemOriginal->height, 1, 255);
+
+    int kernelSize = 5; // Tamanho do kernel Gaussiano (ajustável)
+    float sigma = 1.0;  // Desvio padrão (ajustável)
+
+    // Gerar kernel Gaussiano 1D
+    float kernel[kernelSize];
+    float sum = 0.0;
+    int half = kernelSize / 2;
+    for (int i = 0; i < kernelSize; i++) {
+        int x = i - half;
+        kernel[i] = exp(-(x * x) / (2 * sigma * sigma));
+        sum += kernel[i];
+    }
+    // Normalizar kernel
+    for (int i = 0; i < kernelSize; i++) {
+        kernel[i] /= sum;
+    }
+
+    // Aplicar filtro Gaussiano (primeiro horizontalmente)
+    for (int y = 0; y < imagemGray->height; y++) {
+        for (int x = 0; x < imagemGray->width; x++) {
+            float value = 0.0;
+            for (int k = -half; k <= half; k++) {
+                int xi = x + k;
+                if (xi >= 0 && xi < imagemGray->width) {
+                    value += imagemGray->data[y * imagemGray->bytesperline + xi] * kernel[k + half];
+                }
+            }
+            imagemFiltrada->data[y * imagemGray->bytesperline + x] = (unsigned char) value;
+        }
+    }
+
+    // Suavizar a imagem para reduzir o ruído
+    vc_gray_gaussian_blur(imagemGray, imagemFiltrada);
+
+    // Binarizar adaptativamente (considera variações locais de iluminação)
+    vc_gray_to_binary_adaptive_mean(imagemFiltrada, imagemBinaria, 15, 20);
+
+    // Melhorar detecção: operações morfológicas
+    vc_binary_dilate(imagemBinaria, imagemBinaria, 3);
+    vc_binary_erode(imagemBinaria, imagemBinaria, 3);
+
+    // Libertar memória
+    vc_image_free(imagemGray);
+    vc_image_free(imagemFiltrada);
 }
+
 
 // Função para desenhar informações na imagem
 void desenharInformacoes(cv::Mat frame, InfoMoeda* moedas, int numMoedas) {
@@ -355,7 +412,7 @@ void desenharInformacoes(cv::Mat frame, InfoMoeda* moedas, int numMoedas) {
 
 int main(void) {
     // Vídeo
-    char videofile[100] = "C:/Users/fferreira/Projetos/TPProject/video1.mp4";
+    char videofile[100] = "C:/Projetos/TPProject/video1.mp4";
     cv::VideoCapture capture;
     struct {
         int width, height;
@@ -368,8 +425,10 @@ int main(void) {
     char str[100];
     int key = 0;
     InfoMoeda moedas[100]; // Array para armazenar informações das moedas
-    int numMoedas = 0;
+    int numMoedas = 0;    
     
+    printf("Iniciando programa...\n");
+
     // Verificar se o arquivo de vídeo existe antes de abrir
     if (!std::filesystem::exists(videofile)) {
         printf("Erro: O arquivo de vídeo '%s' não foi encontrado!\n", videofile);
@@ -379,21 +438,35 @@ int main(void) {
     // Abrir o arquivo de vídeo
     capture.open(videofile);
     
+    // Verificar se o vídeo existe
+if (!std::filesystem::exists(videofile)) {
+    printf("Erro: O arquivo de vídeo '%s' não foi encontrado!\n", videofile);
+    return 1;
+}
+    printf("Arquivo de vídeo encontrado.\n");
+
     // Verificar se foi possível abrir o arquivo de vídeo
     if (!capture.isOpened()) {
         printf("Erro ao abrir o arquivo de vídeo!\n");
         return 1;
     }
-    
+    printf("Arquivo de vídeo encontrado.\n");
+
     // Obter propriedades do vídeo
+    printf("Obtendo propriedades do vídeo...\n");
     video.ntotalframes = (int)capture.get(cv::CAP_PROP_FRAME_COUNT);
     video.fps = (int)capture.get(cv::CAP_PROP_FPS);
     video.width = (int)capture.get(cv::CAP_PROP_FRAME_WIDTH);
     video.height = (int)capture.get(cv::CAP_PROP_FRAME_HEIGHT);
     
+    printf("Propriedades: %d frames, %d fps, %dx%d\n", video.ntotalframes, video.fps, video.width, video.height);
+
     // Criar janela para exibir o vídeo
+    printf("Criando janela...\n");
     cv::namedWindow("Detector de Moedas", cv::WINDOW_AUTOSIZE);
     
+    printf("Entrando no loop principal...\n");
+
     // Iniciar o timer
     // vc_timer();
     
@@ -423,6 +496,25 @@ int main(void) {
         
         printf("Processando frame %d de %d...\n", video.nframe, video.ntotalframes);
         
+
+/*         // SE ESTIVER NOS PRIMEIROS 20 FRAMES, apenas mostrar imagens e continuar
+    if (video.nframe < 20) {
+        cv::imshow("Detector de Moedas", frame);
+        cv::Mat imgGray;
+        cv::cvtColor(frame, imgGray, cv::COLOR_BGR2GRAY);
+        cv::imshow("Imagem Cinza", imgGray);
+        key = cv::waitKey(1);
+        continue;
+    }
+
+        // Pausar no frame 50 para análise
+    if (video.nframe == 50)
+    {
+        printf("Pausa automática no frame 50 para análise.\n");
+        cv::waitKey(0); // Espera indefinidamente até carregares numa tecla
+    } */
+
+
         // Criar uma nova imagem IVC
         IVC* image = vc_image_new(video.width, video.height, 3, 255);
         if (image == NULL) {
@@ -433,6 +525,10 @@ int main(void) {
         // Copiar dados da imagem de cv::Mat para IVC
         memcpy(image->data, frame.data, video.width * video.height * 3);
         
+        cv::Mat imgGray;
+        cv::cvtColor(frame, imgGray, cv::COLOR_BGR2GRAY);
+        cv::imshow("Imagem Cinza", imgGray);
+
         // Criar imagem binária para segmentação
         IVC* imagemBinaria = vc_image_new(video.width, video.height, 1, 255);
         if (imagemBinaria == NULL) {
@@ -465,13 +561,12 @@ int main(void) {
     // Parar o timer e exibir o tempo decorrido
     // vc_timer();
     
-    // Fechar a janela
-    cv::destroyWindow("Detector de Moedas");
+        // Fechar o arquivo de vídeo
+        std::cout << "Pressione Enter para sair..." << std::endl;
+        std::cin.get(); // Aguarda o utilizador pressionar Enter
     
-    // Fechar o arquivo de vídeo
-    
-    std::cout << "Pressione Enter para sair..." << std::endl;
-    std::cin.get(); // Aguarda o utilizador pressionar Enter
+        // Fechar a janela
+        cv::destroyWindow("Detector de Moedas"); 
 
     capture.release();
     return 0;

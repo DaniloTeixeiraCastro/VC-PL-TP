@@ -59,7 +59,7 @@ EQUALS = =
 CMAKE_SOURCE_DIR = C:\Projetos\TPProject
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = C:\Projetos\TPProject\CMakeBuild
+CMAKE_BINARY_DIR = C:\Projetos\TPProject\cmakebuild
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -86,9 +86,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start C:\Projetos\TPProject\CMakeBuild\CMakeFiles C:\Projetos\TPProject\CMakeBuild\\CMakeFiles\progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start C:\Projetos\TPProject\cmakebuild\CMakeFiles C:\Projetos\TPProject\cmakebuild\\CMakeFiles\progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start C:\Projetos\TPProject\CMakeBuild\CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start C:\Projetos\TPProject\cmakebuild\CMakeFiles 0
 .PHONY : all
 
 # The main clean target

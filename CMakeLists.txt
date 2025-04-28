@@ -1,29 +1,24 @@
-cmake_minimum_required(VERSION 3.10)
-project(Moedas)
+# Versão mínima do CMake necessária
+cmake_minimum_required(VERSION 3.15)
 
-# Define o padrão C++
-set(CMAKE_CXX_STANDARD 17)
+# Nome do projeto e linguagem principal (C)
+project(CMAKE_MODULE_LINKER_FLAGS_<CONFIG>)
 
-# Caminho para o vcpkg
-set(CMAKE_TOOLCHAIN_FILE "C:/vcpkg/scripts/buildsystems/vcpkg.cmake" CACHE STRING "")
+# Definir o standard de C que vamos usar (C11)
+set(CMAKE_C_STANDARD 11)
+set(CMAKE_C_STANDARD_REQUIRED ON)
 
-# Adiciona o caminho do FindFFMPEG.cmake fornecido pelo vcpkg
-list(APPEND CMAKE_MODULE_PATH "C:/vcpkg/installed/x64-mingw-dynamic/share/ffmpeg")
+# Incluir o diretório de headers
+include_directories(include)
 
-# Força o vc.c a ser tratado como código C
-set_source_files_properties(vc.c PROPERTIES LANGUAGE C)
+# Ir buscar automaticamente todos os ficheiros .c dentro da pasta src
+file(GLOB SOURCES src/*.c)
 
-# Encontrar o OpenCV
+# Encontrar o pacote OpenCV (através do vcpkg, por exemplo)
 find_package(OpenCV REQUIRED)
 
-# Encontrar o FFMPEG usando o FindFFMPEG.cmake
-find_package(FFMPEG REQUIRED)
-
-# Adicionar includes do OpenCV e FFMPEG
-include_directories(${OpenCV_INCLUDE_DIRS} ${FFMPEG_INCLUDE_DIRS})
-
-# Adicionar os arquivos do projeto
+# Criar o executável com o nome "moedas" e associar-lhe os ficheiros fontes
 add_executable(moedas main.cpp vc.c)
 
-# Linkar as bibliotecas do OpenCV e FFMPEG
-target_link_libraries(moedas PRIVATE ${OpenCV_LIBS} ${FFMPEG_LIBRARIES})
+# Ligar o executável às bibliotecas do OpenCV
+target_link_libraries(moedas PRIVATE ${OpenCV_LIBS})

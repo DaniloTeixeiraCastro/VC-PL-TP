@@ -41,22 +41,22 @@ Este projeto implementa um sistema de detecção e quantificação de moedas em 
 ## Como Usar
 
 
-📦 Requisitos
+##  📦  Requisitos
 
 
-Windows 10/11
+- Windows 10/11
 
-MinGW-w64
+- MinGW-w64
 
-CMake
+- CMake
 
-vcpkg
+- vcpkg
 
 OpenCV 4 (instalado via vcpkg)
 
 
 
-🛠 Instalação
+## 🛠 Instalação
 
 1. Instala MinGW, CMake e vcpkg conforme o Guia de Instalação.
 
@@ -78,8 +78,9 @@ C:\Projetos\TPProject\
 
 
    📚 Guia de Instalação
+   
 
-Pré-requisitos:
+## Pré-requisitos:
 
 Sistema Operativo: Windows 10 ou superior
 
@@ -95,7 +96,7 @@ Terminal: PowerShell ou Command Prompt
 
 
 
-🛠 Instalação Passo a Passo
+## 🛠 Instalação Passo a Passo
 
 1. Instalar o MinGW-w64:
    
@@ -121,7 +122,7 @@ cd vcpkg
 .\bootstrap-vcpkg.bat
 
 
-Instala bibliotecas com:
+## Instala bibliotecas com:
 
 .\vcpkg install opencv4:x64-mingw-dynamic
 
@@ -130,9 +131,9 @@ Nota: usa sempre o :x64-mingw-dynamic para ser compatível com o teu MinGW.
 
 
 
-⚙️ Configuração e Build
+## ⚙️ Configuração e Build
 
-1. No terminal:
+1. No terminal, configure e construa o build:
 
 cmake -S . -B cmakebuild -G "MinGW Makefiles" `
   -DCMAKE_C_COMPILER=C:/msys64/mingw64/bin/gcc.exe `

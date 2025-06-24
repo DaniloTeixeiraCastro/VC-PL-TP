@@ -801,3 +801,410 @@ NUMERO DE MOEDAS: 2
  -2 CENT: 0
  -1 CENT: 0
 
+== VIDEO: C:/Projetos/Moedas/videos/video1.mp4 | HORA: 23-6-2025 23:5:44 ==
+NUMERO DE MOEDAS: 5
+ -2 EUROS: 0
+ -1 EURO: 0
+ -50 CENT: 0
+ -20 CENT: 1
+ -10 CENT: 2
+ -5 CENT: 0
+ -2 CENT: 1
+ -1 CENT: 1
+
+== VIDEO: C:/Projetos/Moedas/videos/video1.mp4 | HORA: 24-6-2025 16:5:28 ==
+NUMERO DE MOEDAS: 5
+ -2 EUROS: 0
+ -1 EURO: 0
+ -50 CENT: 0
+ -20 CENT: 1
+ -10 CENT: 2
+ -5 CENT: 0
+ -2 CENT: 1
+ -1 CENT: 1
+
+== VIDEO: C:/Projetos/Moedas/videos/video1.mp4 | HORA: 24-6-2025 16:27:43 ==
+NUMERO DE MOEDAS: 5
+ -2 EUROS: 0
+ -1 EURO: 0
+ -50 CENT: 0
+ -20 CENT: 1
+ -10 CENT: 2
+ -5 CENT: 0
+ -2 CENT: 1
+ -1 CENT: 1
+
+== VIDEO: C:/Projetos/Moedas/videos/video1.mp4 | HORA: 24-6-2025 16:36:44 ==
+NUMERO DE MOEDAS: 5
+ -2 EUROS: 0
+ -1 EURO: 0
+ -50 CENT: 0
+ -20 CENT: 1
+ -10 CENT: 2
+ -5 CENT: 0
+ -2 CENT: 1
+ -1 CENT: 1
+
+== VIDEO: C:/Projetos/Moedas/videos/video1.mp4 | HORA: 24-6-2025 16:39:41 ==
+NUMERO DE MOEDAS: 5
+ -2 EUROS: 0
+ -1 EURO: 0
+ -50 CENT: 0
+ -20 CENT: 1
+ -10 CENT: 2
+ -5 CENT: 0
+ -2 CENT: 1
+ -1 CENT: 1
+
+== VIDEO: C:/Projetos/Moedas/videos/video1.mp4 | HORA: 24-6-2025 17:25:17 ==
+NUMERO DE MOEDAS: 5
+ -2 EUROS: 0
+ -1 EURO: 0
+ -50 CENT: 0
+ -20 CENT: 1
+ -10 CENT: 2
+ -5 CENT: 0
+ -2 CENT: 1
+ -1 CENT: 1
+
+== VIDEO: C:/Projetos/Moedas/videos/video1.mp4 | HORA: 24-6-2025 17:32:49 ==
+NUMERO DE MOEDAS: 6
+ -2 EUROS: 0
+ -1 EURO: 0
+ -50 CENT: 1
+ -20 CENT: 0
+ -10 CENT: 2
+ -5 CENT: 0
+ -2 CENT: 1
+ -1 CENT: 2
+
+== VIDEO: C:/Projetos/Moedas/videos/video1.mp4 | HORA: 24-6-2025 17:35:22 ==
+NUMERO DE MOEDAS: 6
+ -2 EUROS: 0
+ -1 EURO: 0
+ -50 CENT: 1
+ -20 CENT: 0
+ -10 CENT: 2
+ -5 CENT: 0
+ -2 CENT: 1
+ -1 CENT: 2
+
+== VIDEO: C:/Projetos/Moedas/videos/video1.mp4 | HORA: 24-6-2025 17:49:21 ==
+NUMERO DE MOEDAS: 0
+ -2 EUROS: 0
+ -1 EURO: 0
+ -50 CENT: 0
+ -20 CENT: 0
+ -10 CENT: 0
+ -5 CENT: 0
+ -2 CENT: 0
+ -1 CENT: 0
+
+== VIDEO: C:/Projetos/Moedas/videos/video1.mp4 | HORA: 24-6-2025 17:54:56 ==
+NUMERO DE MOEDAS: 7
+ -2 EUROS: 0
+ -1 EURO: 0
+ -50 CENT: 1
+ -20 CENT: 1
+ -10 CENT: 2
+ -5 CENT: 0
+ -2 CENT: 1
+ -1 CENT: 2
+
+== VIDEO: C:/Projetos/Moedas/videos/video1.mp4 | HORA: 24-6-2025 17:56:48 ==
+NUMERO DE MOEDAS: 5
+ -2 EUROS: 0
+ -1 EURO: 0
+ -50 CENT: 0
+ -20 CENT: 1
+ -10 CENT: 2
+ -5 CENT: 0
+ -2 CENT: 1
+ -1 CENT: 1
+
+== VIDEO: C:/Projetos/Moedas/videos/video1.mp4 | HORA: 24-6-2025 17:59:16 ==
+NUMERO DE MOEDAS: 6
+ -2 EUROS: 0
+ -1 EURO: 0
+ -50 CENT: 1
+ -20 CENT: 0
+ -10 CENT: 2
+ -5 CENT: 0
+ -2 CENT: 1
+ -1 CENT: 2
+
+== VIDEO: C:/Projetos/Moedas/videos/video1.mp4 | HORA: 24-6-2025 18:6:25 ==
+NUMERO DE MOEDAS: 6
+ -2 EUROS: 0
+ -1 EURO: 0
+ -50 CENT: 1
+ -20 CENT: 0
+ -10 CENT: 2
+ -5 CENT: 0
+ -2 CENT: 1
+ -1 CENT: 2
+
+== VIDEO: C:/Projetos/Moedas/videos/video1.mp4 | HORA: 24-6-2025 18:10:34 ==
+NUMERO DE MOEDAS: 6
+ -2 EUROS: 0
+ -1 EURO: 0
+ -50 CENT: 1
+ -20 CENT: 0
+ -10 CENT: 2
+ -5 CENT: 0
+ -2 CENT: 1
+ -1 CENT: 2
+
+== VIDEO: C:/Projetos/Moedas/videos/video1.mp4 | HORA: 24-6-2025 18:15:52 ==
+NUMERO DE MOEDAS: 7
+ -2 EUROS: 0
+ -1 EURO: 0
+ -50 CENT: 1
+ -20 CENT: 0
+ -10 CENT: 2
+ -5 CENT: 1
+ -2 CENT: 1
+ -1 CENT: 2
+
+== VIDEO: C:/Projetos/Moedas/videos/video1.mp4 | HORA: 24-6-2025 18:17:57 ==
+NUMERO DE MOEDAS: 7
+ -2 EUROS: 0
+ -1 EURO: 0
+ -50 CENT: 1
+ -20 CENT: 0
+ -10 CENT: 2
+ -5 CENT: 1
+ -2 CENT: 1
+ -1 CENT: 2
+
+== VIDEO: C:/Projetos/Moedas/videos/video1.mp4 | HORA: 24-6-2025 18:19:30 ==
+NUMERO DE MOEDAS: 7
+ -2 EUROS: 0
+ -1 EURO: 0
+ -50 CENT: 1
+ -20 CENT: 0
+ -10 CENT: 2
+ -5 CENT: 1
+ -2 CENT: 1
+ -1 CENT: 2
+
+== VIDEO: C:/Projetos/Moedas/videos/video1.mp4 | HORA: 24-6-2025 18:24:11 ==
+NUMERO DE MOEDAS: 7
+ -2 EUROS: 0
+ -1 EURO: 0
+ -50 CENT: 1
+ -20 CENT: 0
+ -10 CENT: 2
+ -5 CENT: 1
+ -2 CENT: 1
+ -1 CENT: 2
+
+== VIDEO: C:/Projetos/Moedas/videos/video1.mp4 | HORA: 24-6-2025 18:28:7 ==
+NUMERO DE MOEDAS: 7
+ -2 EUROS: 0
+ -1 EURO: 0
+ -50 CENT: 1
+ -20 CENT: 0
+ -10 CENT: 2
+ -5 CENT: 1
+ -2 CENT: 1
+ -1 CENT: 2
+
+== VIDEO: C:/Projetos/Moedas/videos/video1.mp4 | HORA: 24-6-2025 18:29:35 ==
+NUMERO DE MOEDAS: 7
+ -2 EUROS: 0
+ -1 EURO: 0
+ -50 CENT: 1
+ -20 CENT: 0
+ -10 CENT: 2
+ -5 CENT: 1
+ -2 CENT: 1
+ -1 CENT: 2
+
+== VIDEO: C:/Projetos/Moedas/videos/video1.mp4 | HORA: 24-6-2025 18:35:23 ==
+NUMERO DE MOEDAS: 5
+ -2 EUROS: 0
+ -1 EURO: 1
+ -50 CENT: 0
+ -20 CENT: 0
+ -10 CENT: 2
+ -5 CENT: 0
+ -2 CENT: 1
+ -1 CENT: 1
+
+== VIDEO: C:/Projetos/Moedas/videos/video1.mp4 | HORA: 24-6-2025 18:37:5 ==
+NUMERO DE MOEDAS: 5
+ -2 EUROS: 0
+ -1 EURO: 1
+ -50 CENT: 0
+ -20 CENT: 0
+ -10 CENT: 2
+ -5 CENT: 0
+ -2 CENT: 1
+ -1 CENT: 1
+
+== VIDEO: C:/Projetos/Moedas/videos/video1.mp4 | HORA: 24-6-2025 18:39:30 ==
+NUMERO DE MOEDAS: 7
+ -2 EUROS: 0
+ -1 EURO: 0
+ -50 CENT: 1
+ -20 CENT: 0
+ -10 CENT: 2
+ -5 CENT: 1
+ -2 CENT: 1
+ -1 CENT: 2
+
+== VIDEO: C:/Projetos/Moedas/videos/video1.mp4 | HORA: 24-6-2025 18:43:55 ==
+NUMERO DE MOEDAS: 7
+ -2 EUROS: 0
+ -1 EURO: 0
+ -50 CENT: 1
+ -20 CENT: 1
+ -10 CENT: 2
+ -5 CENT: 1
+ -2 CENT: 1
+ -1 CENT: 1
+
+== VIDEO: C:/Projetos/Moedas/videos/video1.mp4 | HORA: 24-6-2025 18:46:19 ==
+NUMERO DE MOEDAS: 7
+ -2 EUROS: 0
+ -1 EURO: 0
+ -50 CENT: 1
+ -20 CENT: 1
+ -10 CENT: 2
+ -5 CENT: 1
+ -2 CENT: 1
+ -1 CENT: 1
+
+== VIDEO: C:/Projetos/Moedas/videos/video1.mp4 | HORA: 24-6-2025 18:49:41 ==
+NUMERO DE MOEDAS: 9
+ -2 EUROS: 0
+ -1 EURO: 0
+ -50 CENT: 1
+ -20 CENT: 2
+ -10 CENT: 2
+ -5 CENT: 1
+ -2 CENT: 1
+ -1 CENT: 2
+
+== VIDEO: C:/Projetos/Moedas/videos/video1.mp4 | HORA: 24-6-2025 18:58:51 ==
+NUMERO DE MOEDAS: 8
+ -2 EUROS: 1
+ -1 EURO: 1
+ -50 CENT: 1
+ -20 CENT: 2
+ -10 CENT: 0
+ -5 CENT: 0
+ -2 CENT: 0
+ -1 CENT: 3
+
+== VIDEO: C:/Projetos/Moedas/videos/video1.mp4 | HORA: 24-6-2025 19:1:8 ==
+NUMERO DE MOEDAS: 8
+ -2 EUROS: 1
+ -1 EURO: 1
+ -50 CENT: 1
+ -20 CENT: 2
+ -10 CENT: 0
+ -5 CENT: 0
+ -2 CENT: 0
+ -1 CENT: 3
+
+== VIDEO: C:/Projetos/Moedas/videos/video1.mp4 | HORA: 24-6-2025 19:3:46 ==
+NUMERO DE MOEDAS: 8
+ -2 EUROS: 1
+ -1 EURO: 1
+ -50 CENT: 1
+ -20 CENT: 2
+ -10 CENT: 0
+ -5 CENT: 0
+ -2 CENT: 0
+ -1 CENT: 3
+
+== VIDEO: C:/Projetos/Moedas/videos/video1.mp4 | HORA: 24-6-2025 19:6:7 ==
+NUMERO DE MOEDAS: 3
+ -2 EUROS: 0
+ -1 EURO: 0
+ -50 CENT: 0
+ -20 CENT: 0
+ -10 CENT: 0
+ -5 CENT: 1
+ -2 CENT: 0
+ -1 CENT: 2
+
+== VIDEO: C:/Projetos/Moedas/videos/video1.mp4 | HORA: 24-6-2025 19:9:39 ==
+NUMERO DE MOEDAS: 9
+ -2 EUROS: 0
+ -1 EURO: 0
+ -50 CENT: 1
+ -20 CENT: 2
+ -10 CENT: 2
+ -5 CENT: 1
+ -2 CENT: 1
+ -1 CENT: 2
+
+== VIDEO: C:/Projetos/Moedas/videos/video1.mp4 | HORA: 24-6-2025 19:14:15 ==
+NUMERO DE MOEDAS: 9
+ -2 EUROS: 0
+ -1 EURO: 1
+ -50 CENT: 1
+ -20 CENT: 1
+ -10 CENT: 2
+ -5 CENT: 1
+ -2 CENT: 1
+ -1 CENT: 2
+
+== VIDEO: C:/Projetos/Moedas/videos/video1.mp4 | HORA: 24-6-2025 19:17:4 ==
+NUMERO DE MOEDAS: 5
+ -2 EUROS: 0
+ -1 EURO: 2
+ -50 CENT: 0
+ -20 CENT: 0
+ -10 CENT: 0
+ -5 CENT: 1
+ -2 CENT: 0
+ -1 CENT: 2
+
+== VIDEO: C:/Projetos/Moedas/videos/video2.mp4 | HORA: 24-6-2025 19:31:50 ==
+NUMERO DE MOEDAS: 18
+ -2 EUROS: 0
+ -1 EURO: 3
+ -50 CENT: 0
+ -20 CENT: 0
+ -10 CENT: 3
+ -5 CENT: 2
+ -2 CENT: 4
+ -1 CENT: 6
+
+== VIDEO: C:/Projetos/Moedas/videos/video1.mp4 | HORA: 24-6-2025 20:1:19 ==
+NUMERO DE MOEDAS: 7
+ -2 EUROS: 0
+ -1 EURO: 0
+ -50 CENT: 1
+ -20 CENT: 1
+ -10 CENT: 1
+ -5 CENT: 0
+ -2 CENT: 0
+ -1 CENT: 4
+
+== VIDEO: C:/Projetos/Moedas/videos/video1.mp4 | HORA: 24-6-2025 20:49:6 ==
+NUMERO DE MOEDAS: 7
+ -2 EUROS: 0
+ -1 EURO: 0
+ -50 CENT: 1
+ -20 CENT: 1
+ -10 CENT: 1
+ -5 CENT: 0
+ -2 CENT: 0
+ -1 CENT: 4
+
+== VIDEO: C:/Projetos/Moedas/videos/video1.mp4 | HORA: 24-6-2025 21:24:44 ==
+NUMERO DE MOEDAS: 4
+ -2 EUROS: 0
+ -1 EURO: 1
+ -50 CENT: 0
+ -20 CENT: 0
+ -10 CENT: 0
+ -5 CENT: 0
+ -2 CENT: 0
+ -1 CENT: 3
+

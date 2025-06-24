@@ -56,6 +56,10 @@ int vc_draw_line(IVC* src, int x1, int y1, int x2, int y2, int color[3]);
 int vc_draw_circle(IVC* src, int xc, int yc, int radius, int color[3], int fill);
 int vc_put_text(IVC* src, const char* text, int x, int y, int color[3], int fontsize);
 
+// FUNÇÕES: MORFOLOGIA
+int vc_dilate(IVC* src, IVC* dst, int kernel_size);
+int vc_erode(IVC* src, IVC* dst, int kernel_size);
+
 // FUNÇÕES: AUXILIARES
 int desenha_linhaVermelha(cv::Mat frame);
 int desenha_linhaVerde(cv::Mat frame);

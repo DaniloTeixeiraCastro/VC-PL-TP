@@ -157,15 +157,15 @@ int idMoeda(int area, int perimeter, float circularity, cv::Vec3b meanColor) {
  
     if (area >= 26000 && area < 29000 && perimeter >= 700 && perimeter < 850) return 200;
 
-    else if (area >= 20610 && area < 24000 && perimeter >= 600 && perimeter < 750) return 100;
+    else if (area >= 19000 && area < 24000 && perimeter >= 600 && perimeter < 750) return 100;
 
     else if (area >= 24000 && area < 26000 && perimeter >= 600 && perimeter < 800) return 50;
 
-    else if (area >= 19500 && area < 22000 && perimeter >= 550 && perimeter < 650) return 20;
+    else if (area >= 19500 && area < 22000 && perimeter >= 530 && perimeter < 670) return 20;
  
     else if (area >= 16000 && area < 17500 && perimeter >= 500 && perimeter < 650) return 10;
 
-    else if (area >= 17500 && area < 20000 && perimeter >= 550 && perimeter < 700) return 5;
+    else if (area >= 17500 && area < 20000 && perimeter >= 510 && perimeter < 700) return 5;
  
     else if (area >= 12500 && area < 15500 && perimeter >= 450 && perimeter < 600) return 2;
  
@@ -378,6 +378,74 @@ int vc_convert_bgr_to_gray(IVC* src, IVC* dst) {
     }
     return 1;
 }
+
+
+// FUNÇÕES DE MORFOLOGIA PARA DILATAÇÃO E EROSÃO
+
+// Dilatação binária (kernel quadrado de tamanho kernel_size)
+int vc_dilate(IVC* src, IVC* dst, int kernel_size)
+{
+    if (!src || !dst || src->channels != 1 || dst->channels != 1) return 0;
+    int offset = kernel_size / 2;
+    for (int y = 0; y < src->height; y++)
+    {
+        for (int x = 0; x < src->width; x++)
+        {
+            int found = 0;
+            for (int ky = -offset; ky <= offset; ky++)
+            {
+                for (int kx = -offset; kx <= offset; kx++)
+                {
+                    int nx = x + kx;
+                    int ny = y + ky;
+                    if (nx >= 0 && nx < src->width && ny >= 0 && ny < src->height)
+                    {
+                        if (src->data[ny * src->bytesperline + nx] == 255)
+                        {
+                            found = 1;
+                            break;
+                        }
+                    }
+                }
+                if (found) break;
+            }
+            dst->data[y * dst->bytesperline + x] = found ? 255 : 0;
+        }
+    }
+    return 1;
+}
+
+// Erosão binária (kernel quadrado de tamanho kernel_size)
+int vc_erode(IVC* src, IVC* dst, int kernel_size)
+{
+    if (!src || !dst || src->channels != 1 || dst->channels != 1) return 0;
+    int offset = kernel_size / 2;
+    for (int y = 0; y < src->height; y++)
+    {
+        for (int x = 0; x < src->width; x++)
+        {
+            int all = 1;
+            for (int ky = -offset; ky <= offset; ky++)
+            {
+                for (int kx = -offset; kx <= offset; kx++)
+                {
+                    int nx = x + kx;
+                    int ny = y + ky;
+                    if (nx < 0 || nx >= src->width || ny < 0 || ny >= src->height ||
+                        src->data[ny * src->bytesperline + nx] != 255)
+                    {
+                        all = 0;
+                        break;
+                    }
+                }
+                if (!all) break;
+            }
+            dst->data[y * dst->bytesperline + x] = all ? 255 : 0;
+        }
+    }
+    return 1;
+}
+
 
 // FUNÇÃO PARA ETIQUETAGEM DE COMPONENTES CONECTADOS
 OVC* vc_component_labelling(IVC* src, IVC* dst, int* nlabels) {

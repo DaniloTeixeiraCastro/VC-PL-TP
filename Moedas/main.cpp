@@ -65,7 +65,7 @@ int main(int argc, const char* argv[]) {
 
     //--- Adicionar janela e trackbars para ajuste HSV ---
     cv::namedWindow("Segmentacao HSV", cv::WINDOW_AUTOSIZE);
-    int hmin = 9, hmax = 150, smin = 35, smax = 255, vmin = 20, vmax = 150;
+    int hmin = 9, hmax = 80, smin = 32, smax = 255, vmin = 20, vmax = 150;
     cv::createTrackbar("Hmin", "Segmentacao HSV", &hmin, 179);
     cv::createTrackbar("Hmax", "Segmentacao HSV", &hmax, 179);
     cv::createTrackbar("Smin", "Segmentacao HSV", &smin, 255);

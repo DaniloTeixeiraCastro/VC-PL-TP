@@ -65,7 +65,7 @@ int main(int argc, const char* argv[]) {
 
     //--- Adicionar janela e trackbars para ajuste HSV ---
     cv::namedWindow("Segmentacao HSV", cv::WINDOW_AUTOSIZE);
-    int hmin = 9, hmax = 80, smin = 32, smax = 255, vmin = 20, vmax = 150;
+    int hmin = 10, hmax = 80, smin = 25, smax = 255, vmin = 20, vmax = 150;
     cv::createTrackbar("Hmin", "Segmentacao HSV", &hmin, 179);
     cv::createTrackbar("Hmax", "Segmentacao HSV", &hmax, 179);
     cv::createTrackbar("Smin", "Segmentacao HSV", &smin, 255);
@@ -124,12 +124,17 @@ int main(int argc, const char* argv[]) {
 
         // Após a segmentação HSV (framethr já contém a imagem binária)
         IVC* ivcIn = cv_mat_to_ivc(framethr);
-        IVC* ivcTemp = vc_image_new(ivcIn->width, ivcIn->height, 1, 255);
+        IVC* ivcTemp1 = vc_image_new(ivcIn->width, ivcIn->height, 1, 255);
+        IVC* ivcTemp2 = vc_image_new(ivcIn->width, ivcIn->height, 1, 255);
         IVC* ivcOut = vc_image_new(ivcIn->width, ivcIn->height, 1, 255);
 
-        // Dilatação seguida de erosão (fechamento)
-        vc_dilate(ivcIn, ivcTemp, 5);   // kernel 3x3
-        vc_erode(ivcTemp, ivcOut, 5);
+        // Abertura: erosão seguida de dilatação
+        vc_erode(ivcIn, ivcTemp1, 5);
+        vc_dilate(ivcTemp1, ivcTemp2, 5);
+
+        // Fechamento: dilatação seguida de erosão
+        vc_dilate(ivcTemp2, ivcTemp1, 5);
+        vc_erode(ivcTemp1, ivcOut, 5);
 
         // Copiar resultado de volta para o Mat do OpenCV
         cv::Mat tempMat(framethr.rows, framethr.cols, CV_8UC1, ivcOut->data);
@@ -137,8 +142,10 @@ int main(int argc, const char* argv[]) {
 
         // Liberar memória
         vc_image_free(ivcIn);
-        vc_image_free(ivcTemp);
+        vc_image_free(ivcTemp1);
+        vc_image_free(ivcTemp2);
         vc_image_free(ivcOut);
+
 
         int nMoedas = 0;
         OVC* moedas = vc_binary_blob_labelling(framethr, framethr, &nMoedas);

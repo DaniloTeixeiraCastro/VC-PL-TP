@@ -1208,3 +1208,25 @@ NUMERO DE MOEDAS: 4
  -2 CENT: 0
  -1 CENT: 3
 
+== VIDEO: C:/Projetos/Moedas/videos/video1.mp4 | HORA: 26-6-2025 21:27:45 ==
+NUMERO DE MOEDAS: 12
+ -2 EUROS: 2
+ -1 EURO: 1
+ -50 CENT: 1
+ -20 CENT: 3
+ -10 CENT: 1
+ -5 CENT: 1
+ -2 CENT: 1
+ -1 CENT: 2
+
+== VIDEO: C:/Projetos/Moedas/videos/video1.mp4 | HORA: 26-6-2025 21:33:23 ==
+NUMERO DE MOEDAS: 12
+ -2 EUROS: 2
+ -1 EURO: 1
+ -50 CENT: 1
+ -20 CENT: 2
+ -10 CENT: 1
+ -5 CENT: 2
+ -2 CENT: 1
+ -1 CENT: 2
+

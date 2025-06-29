@@ -32,17 +32,17 @@ int main(int argc, const char* argv[]) {
         videofile = argv[1];
     }
     else {
-        std::cout << "Escolha o vídeo para processar:\n";
-        std::cout << "1 - C:/Projetos/Moedas/videos/video1.mp4\n";
-        std::cout << "2 - C:/Projetos/Moedas/videos/video2.mp4\n";
+        std::cout << "Escolha o video para processar:\n";
+        std::cout << "1 - C:/VC-PL-TP/videos/video1.mp4\n";
+        std::cout << "2 - C:/VC-PL-TP/videos/video2.mp4\n";
         std::cout << "Opcao: ";
         int opcao = 0;
         std::cin >> opcao;
         if (opcao == 1) {
-            videofile = "C:/Projetos/Moedas/videos/video1.mp4";
+            videofile = "C:/VC-PL-TP/videos/video1.mp4";
         }
         else if (opcao == 2) {
-            videofile = "C:/Projetos/Moedas/videos/video2.mp4";
+            videofile = "C:/VC-PL-TP/videos/video2.mp4";
         }
         else {
             std::cerr << "Opcao inválida!\n";
@@ -100,7 +100,7 @@ int main(int argc, const char* argv[]) {
 
         int currentFrame = static_cast<int>(capture.get(cv::CAP_PROP_POS_FRAMES));
 
-        cv::Mat framethr = cv::Mat::zeros(frameorig.size(), CV_8UC1);
+        cv::Mat framethr(frameorig.size(), CV_8UC1);
 
        
         // Pegue os valores atuais das trackbars
@@ -342,7 +342,8 @@ int main(int argc, const char* argv[]) {
     escreverInfo(fp, cont, mTotal, m200, m100, m50, m20, m10, m5, m2, m1, videofile.c_str());
     fclose(fp);
     capture.release();
-    cv::destroyAllWindows();
+    cv::destroyWindow("Detetor de moedas");
+    cv::destroyWindow("Segmentacao HSV");
     std::cout << "Programa terminado.\n";
     return 0;
 }

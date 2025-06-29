@@ -1230,3 +1230,91 @@ NUMERO DE MOEDAS: 12
  -2 CENT: 1
  -1 CENT: 2
 
+== VIDEO: C:/VC-PL-TP/videos/video1.mp4 | HORA: 28-6-2025 16:22:51 ==
+NUMERO DE MOEDAS: 0
+ -2 EUROS: 0
+ -1 EURO: 0
+ -50 CENT: 0
+ -20 CENT: 0
+ -10 CENT: 0
+ -5 CENT: 0
+ -2 CENT: 0
+ -1 CENT: 0
+
+== VIDEO: C:/VC-PL-TP/videos/video2.mp4 | HORA: 28-6-2025 16:23:24 ==
+NUMERO DE MOEDAS: 0
+ -2 EUROS: 0
+ -1 EURO: 0
+ -50 CENT: 0
+ -20 CENT: 0
+ -10 CENT: 0
+ -5 CENT: 0
+ -2 CENT: 0
+ -1 CENT: 0
+
+== VIDEO: C:/VC-PL-TP/videos/video1.mp4 | HORA: 28-6-2025 16:24:49 ==
+NUMERO DE MOEDAS: 0
+ -2 EUROS: 0
+ -1 EURO: 0
+ -50 CENT: 0
+ -20 CENT: 0
+ -10 CENT: 0
+ -5 CENT: 0
+ -2 CENT: 0
+ -1 CENT: 0
+
+== VIDEO: C:/VC-PL-TP/videos/video1.mp4 | HORA: 28-6-2025 16:26:3 ==
+NUMERO DE MOEDAS: 0
+ -2 EUROS: 0
+ -1 EURO: 0
+ -50 CENT: 0
+ -20 CENT: 0
+ -10 CENT: 0
+ -5 CENT: 0
+ -2 CENT: 0
+ -1 CENT: 0
+
+== VIDEO: C:/VC-PL-TP/videos/video1.mp4 | HORA: 28-6-2025 16:31:0 ==
+NUMERO DE MOEDAS: 0
+ -2 EUROS: 0
+ -1 EURO: 0
+ -50 CENT: 0
+ -20 CENT: 0
+ -10 CENT: 0
+ -5 CENT: 0
+ -2 CENT: 0
+ -1 CENT: 0
+
+== VIDEO: C:/VC-PL-TP/videos/video1.mp4 | HORA: 28-6-2025 16:35:26 ==
+NUMERO DE MOEDAS: 0
+ -2 EUROS: 0
+ -1 EURO: 0
+ -50 CENT: 0
+ -20 CENT: 0
+ -10 CENT: 0
+ -5 CENT: 0
+ -2 CENT: 0
+ -1 CENT: 0
+
+== VIDEO: C:/VC-PL-TP/videos/video1.mp4 | HORA: 28-6-2025 16:41:43 ==
+NUMERO DE MOEDAS: 0
+ -2 EUROS: 0
+ -1 EURO: 0
+ -50 CENT: 0
+ -20 CENT: 0
+ -10 CENT: 0
+ -5 CENT: 0
+ -2 CENT: 0
+ -1 CENT: 0
+
+== VIDEO: C:/VC-PL-TP/videos/video1.mp4 | HORA: 28-6-2025 16:43:2 ==
+NUMERO DE MOEDAS: 0
+ -2 EUROS: 0
+ -1 EURO: 0
+ -50 CENT: 0
+ -20 CENT: 0
+ -10 CENT: 0
+ -5 CENT: 0
+ -2 CENT: 0
+ -1 CENT: 0
+

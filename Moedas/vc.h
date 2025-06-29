@@ -41,7 +41,6 @@ IVC* vc_image_free(IVC* image);
 // FUNÇÕES: CONVERSÃO E SEGMENTAÇÃO
 int vc_bgr_to_hsv(IVC* src, IVC* dst);
 int vc_hsv_segmentation(IVC* src, IVC* dst, int hmin, int hmax, int smin, int smax, int vmin, int vmax);
-int vc_convert_bgr_to_gray(IVC* src, IVC* dst);
 
 // FUNÇÕES: ANÁLISE DE BLOBS
 OVC* vc_binary_blob_labelling(cv::Mat src, cv::Mat dst, int* nlabels);
@@ -67,12 +66,10 @@ int idBlobs(cv::Mat frameIn, cv::Mat frameOut, int hueMin, int hueMax, float sat
 int verificaPassouAntes(OVC* passou, OVC moedas, int cont);
 int idMoeda(int area, int perimeter, float circularity, cv::Vec3b meanColor);
 cv::Vec3b mediaCorROI(const cv::Mat& img, int x, int y, int width, int height);
-unsigned char* vc_media_cor_roi(IVC* src, int x, int y, int width, int height);
 void escreverInfo(FILE* fp, int cont, int mTotal, int m200, int m100, int m50, int m20, int m10, int m5, int m2, int m1, const char* videofile);
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //                   FUNÇÕES DE CONVERSÃO MAT-IVC
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 IVC* cv_mat_to_ivc(cv::Mat src);
-cv::Mat ivc_to_cv_mat(IVC* src);
 

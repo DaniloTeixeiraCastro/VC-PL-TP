@@ -345,40 +345,6 @@ int vc_hsv_segmentation(IVC* src, IVC* dst, int hmin, int hmax, int smin, int sm
     return 1;
 }
 
-// FUNÇÃO PARA CONVERTER BGR PARA TONS DE CINZA
-int vc_convert_bgr_to_gray(IVC* src, IVC* dst) {
-    unsigned char* datasrc = (unsigned char*)src->data;
-    unsigned char* datadst = (unsigned char*)dst->data;
-    int width = src->width;
-    int height = src->height;
-    int bytesperline_src = src->bytesperline;
-    int bytesperline_dst = dst->bytesperline;
-    int channels_src = src->channels;
-    int channels_dst = dst->channels;
-    int b, g, r;
-    int i, j;
-    float gray;
-
-    // Verificação de erros
-    if ((src->width <= 0) || (src->height <= 0) || (src->data == NULL) || (dst->data == NULL)) return 0;
-    if ((src->width != dst->width) || (src->height != dst->height)) return 0;
-    if ((src->channels != 3) || (dst->channels != 1)) return 0;
-
-    for (i = 0; i < height; i++) {
-        for (j = 0; j < width; j++) {
-            b = (int)datasrc[i * bytesperline_src + j * channels_src + 0];
-            g = (int)datasrc[i * bytesperline_src + j * channels_src + 1];
-            r = (int)datasrc[i * bytesperline_src + j * channels_src + 2];
-
-            // Conversão ponderada (baseada na sensibilidade do olho humano)
-            gray = 0.299f * r + 0.587f * g + 0.114f * b;
-
-            datadst[i * bytesperline_dst + j] = (unsigned char)gray;
-        }
-    }
-    return 1;
-}
-
 
 // FUNÇÕES DE MORFOLOGIA PARA DILATAÇÃO E EROSÃO
 
@@ -1037,52 +1003,6 @@ int vc_put_text(IVC* src, const char* text, int x, int y, int color[3], int font
     return 1;
 }
 
-// FUNÇÃO PARA CALCULAR A MÉDIA DE COR EM UMA REGIÃO DE INTERESSE
-unsigned char* vc_media_cor_roi(IVC* src, int x, int y, int width, int height) {
-    unsigned char* data = (unsigned char*)src->data;
-    int imgWidth = src->width;
-    int imgHeight = src->height;
-    int bytesperline = src->bytesperline;
-    int channels = src->channels;
-    long sumB = 0, sumG = 0, sumR = 0, count = 0;
-    int i, j;
-    
-    // Verificação de erros
-    if ((src->width <= 0) || (src->height <= 0) || (src->data == NULL)) return NULL;
-    if (channels != 3) return NULL;
-    
-    // Garantir que a ROI está dentro dos limites da imagem
-    int x1 = MAX(0, x);
-    int y1 = MAX(0, y);
-    int x2 = MIN(imgWidth - 1, x + width - 1);
-    int y2 = MIN(imgHeight - 1, y + height - 1);
-    
-    // Calcular a média de cor na ROI
-    for (j = y1; j <= y2; j++) {
-        for (i = x1; i <= x2; i++) {
-            sumB += data[j * bytesperline + i * channels + 0];
-            sumG += data[j * bytesperline + i * channels + 1];
-            sumR += data[j * bytesperline + i * channels + 2];
-            count++;
-        }
-    }
-    
-    // Alocar e retornar o vetor de médias
-    unsigned char* meanColor = (unsigned char*)malloc(3 * sizeof(unsigned char));
-    if (meanColor && count > 0) {
-        meanColor[0] = (unsigned char)(sumB / count);  // B
-        meanColor[1] = (unsigned char)(sumG / count);  // G
-        meanColor[2] = (unsigned char)(sumR / count);  // R
-    }
-    else if (meanColor) {
-        meanColor[0] = 0;
-        meanColor[1] = 0;
-        meanColor[2] = 0;
-    }
-    
-    return meanColor;
-}
-
 // FUNÇÕES DE CONVERSÃO ENTRE CV::MAT E IVC
 IVC* cv_mat_to_ivc(cv::Mat src) {
     IVC* ivc = NULL;
@@ -1097,24 +1017,5 @@ IVC* cv_mat_to_ivc(cv::Mat src) {
     }
     
     return ivc;
-}
-
-cv::Mat ivc_to_cv_mat(IVC* src) {
-    cv::Mat mat;
-    
-    if (src && src->data) {
-        int type;
-        
-        switch (src->channels) {
-        case 1: type = CV_8UC1; break;
-        case 3: type = CV_8UC3; break;
-        default: return mat; // Retorna matriz vazia se o número de canais não for suportado
-        }
-        
-        mat = cv::Mat(src->height, src->width, type);
-        memcpy(mat.data, src->data, src->width * src->height * src->channels);
-    }
-    
-    return mat;
 }
 

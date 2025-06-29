@@ -9,18 +9,26 @@
 #include <vector>
 #include <iomanip>
 
-// Função original mantida para compatibilidade com código existente
-cv::Vec3b mediaCorROI(const cv::Mat& img, int x, int y, int width, int height) {
+// Função usando apenas IVC para calcular média de cor
+cv::Vec3b mediaCorROI_IVC(const cv::Mat& img, int x, int y, int width, int height) {
+    // Converter Mat para IVC
+    IVC* ivcImg = cv_mat_to_ivc(img);
+    if (!ivcImg) return cv::Vec3b(0, 0, 0);
+    
     long sumB = 0, sumG = 0, sumR = 0, count = 0;
-    for (int j = y; j < y + height && j < img.rows; ++j) {
-        for (int i = x; i < x + width && i < img.cols; ++i) {
-            cv::Vec3b pixel = img.at<cv::Vec3b>(j, i);
-            sumB += pixel[0];
-            sumG += pixel[1];
-            sumR += pixel[2];
+    
+    for (int j = y; j < y + height && j < ivcImg->height; ++j) {
+        for (int i = x; i < x + width && i < ivcImg->width; ++i) {
+            int pos = j * ivcImg->bytesperline + i * ivcImg->channels;
+            sumB += ivcImg->data[pos];     // Blue
+            sumG += ivcImg->data[pos + 1]; // Green  
+            sumR += ivcImg->data[pos + 2]; // Red
             count++;
         }
     }
+    
+    vc_image_free(ivcImg);
+    
     if (count == 0) return cv::Vec3b(0, 0, 0);
     return cv::Vec3b((uchar)(sumB / count), (uchar)(sumG / count), (uchar)(sumR / count));
 }
@@ -63,15 +71,9 @@ int main(int argc, const char* argv[]) {
 
     cv::namedWindow("Detetor de moedas", cv::WINDOW_AUTOSIZE);
 
-    //--- Adicionar janela e trackbars para ajuste HSV ---
+    //--- Valores HSV fixos (removendo trackbars OpenCV) ---
     cv::namedWindow("Segmentacao HSV", cv::WINDOW_AUTOSIZE);
-    int hmin = 10, hmax = 80, smin = 25, smax = 255, vmin = 20, vmax = 150;
-    cv::createTrackbar("Hmin", "Segmentacao HSV", &hmin, 179);
-    cv::createTrackbar("Hmax", "Segmentacao HSV", &hmax, 179);
-    cv::createTrackbar("Smin", "Segmentacao HSV", &smin, 255);
-    cv::createTrackbar("Smax", "Segmentacao HSV", &smax, 255);
-    cv::createTrackbar("Vmin", "Segmentacao HSV", &vmin, 255);
-    cv::createTrackbar("Vmax", "Segmentacao HSV", &vmax, 255);
+    const int hmin = 10, hmax = 80, smin = 25, smax = 255, vmin = 20, vmax = 150;
 
 
     std::vector<OVC> passou;
@@ -102,16 +104,7 @@ int main(int argc, const char* argv[]) {
 
         cv::Mat framethr(frameorig.size(), CV_8UC1);
 
-       
-        // Pegue os valores atuais das trackbars
-        hmin = cv::getTrackbarPos("Hmin", "Segmentacao HSV");
-        hmax = cv::getTrackbarPos("Hmax", "Segmentacao HSV");
-        smin = cv::getTrackbarPos("Smin", "Segmentacao HSV");
-        smax = cv::getTrackbarPos("Smax", "Segmentacao HSV");
-        vmin = cv::getTrackbarPos("Vmin", "Segmentacao HSV");
-        vmax = cv::getTrackbarPos("Vmax", "Segmentacao HSV");
-
-        // Passe esses valores para a função de segmentação
+        // Passe os valores fixos para a função de segmentação
         if (!idBlobs(frameorig, framethr, hmin, hmax, smin, smax, vmin, vmax)) {
             std::cerr << "Erro na segmentação HSV!\n"; continue;
         }
@@ -136,9 +129,8 @@ int main(int argc, const char* argv[]) {
         vc_dilate(ivcTemp2, ivcTemp1, 5);
         vc_erode(ivcTemp1, ivcOut, 5);
 
-        // Copiar resultado de volta para o Mat do OpenCV
-        cv::Mat tempMat(framethr.rows, framethr.cols, CV_8UC1, ivcOut->data);
-        tempMat.copyTo(framethr);
+        // Copiar resultado de volta para o Mat do OpenCV usando memcpy
+        memcpy(framethr.data, ivcOut->data, ivcOut->width * ivcOut->height * ivcOut->channels);
 
         // Liberar memória
         vc_image_free(ivcIn);
@@ -199,7 +191,7 @@ int main(int argc, const char* argv[]) {
                 }
 
                 
-                cv::Vec3b meanColor = mediaCorROI(frameorig, moedas[i].x, moedas[i].y, moedas[i].width, moedas[i].height);
+                cv::Vec3b meanColor = mediaCorROI_IVC(frameorig, moedas[i].x, moedas[i].y, moedas[i].width, moedas[i].height);
                 
                 int tipo = idMoeda(moedas[i].area, moedas[i].perimeter, moedas[i].circularity, meanColor);
                 std::string tipoText;

@@ -41,16 +41,16 @@ int main(int argc, const char* argv[]) {
     }
     else {
         std::cout << "Escolha o video para processar:\n";
-        std::cout << "1 - C:/VC-PL-TP/videos/video1.mp4\n";
-        std::cout << "2 - C:/VC-PL-TP/videos/video2.mp4\n";
+        std::cout << "1 - C:/Projetos/Moedas/videos/video1.mp4\n";
+        std::cout << "2 - C:/Projetos/Moedas/videos/video2.mp4\n";
         std::cout << "Opcao: ";
         int opcao = 0;
         std::cin >> opcao;
         if (opcao == 1) {
-            videofile = "C:/VC-PL-TP/videos/video1.mp4";
+            videofile = "C:/Projetos/Moedas/videos/video1.mp4";
         }
         else if (opcao == 2) {
-            videofile = "C:/VC-PL-TP/videos/video2.mp4";
+            videofile = "C:/Projetos/Moedas/videos/video2.mp4";
         }
         else {
             std::cerr << "Opcao inválida!\n";
@@ -72,8 +72,8 @@ int main(int argc, const char* argv[]) {
     cv::namedWindow("Detetor de moedas", cv::WINDOW_AUTOSIZE);
 
     //--- Valores HSV fixos (removendo trackbars OpenCV) ---
-    cv::namedWindow("Segmentacao HSV", cv::WINDOW_AUTOSIZE);
-    const int hmin = 10, hmax = 80, smin = 25, smax = 255, vmin = 20, vmax = 150;
+    //cv::namedWindow("Segmentacao HSV", cv::WINDOW_AUTOSIZE);
+    //const int hmin = 10, hmax = 80, smin = 25, smax = 255, vmin = 20, vmax = 150;
 
 
     std::vector<OVC> passou;
@@ -105,15 +105,15 @@ int main(int argc, const char* argv[]) {
         cv::Mat framethr(frameorig.size(), CV_8UC1);
 
         // Passe os valores fixos para a função de segmentação
-        if (!idBlobs(frameorig, framethr, hmin, hmax, smin, smax, vmin, vmax)) {
+        //if (!idBlobs(frameorig, framethr, hmin, hmax, smin, smax, vmin, vmax)) {
+        //    std::cerr << "Erro na segmentação HSV!\n"; continue;
+        //}
+
+        //cv::imshow("Segmentacao HSV", framethr);
+
+        if (!idBlobs(frameorig, framethr, 10, 75, 21, 255, 20, 150)) {
             std::cerr << "Erro na segmentação HSV!\n"; continue;
         }
-
-        cv::imshow("Segmentacao HSV", framethr);
-
-        //if (!idBlobs(frameorig, framethr, 12, 150, 35, 255, 20, 150)) {
-            //std::cerr << "Erro na segmentação HSV!\n"; continue;
-        //}
 
         // Após a segmentação HSV (framethr já contém a imagem binária)
         IVC* ivcIn = cv_mat_to_ivc(framethr);
@@ -335,7 +335,7 @@ int main(int argc, const char* argv[]) {
     fclose(fp);
     capture.release();
     cv::destroyWindow("Detetor de moedas");
-    cv::destroyWindow("Segmentacao HSV");
+    //cv::destroyWindow("Segmentacao HSV");
     std::cout << "Programa terminado.\n";
     return 0;
 }

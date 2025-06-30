@@ -155,19 +155,19 @@ int idMoeda(int area, int perimeter, float circularity, cv::Vec3b meanColor) {
     if (area > 35000 || area < 5000) return 0;
     if (circularity < 0.05) return 0;
  
-    if (area >= 22000 && area < 29000 && perimeter >= 700 && perimeter < 1300) return 200;
+    if (area >= 24000 && area < 29000 && perimeter >= 650 && perimeter < 1300) return 200;
 
-    else if (area >= 10500 && area < 24000 && perimeter >= 660 && perimeter < 1500) return 100;
+    else if (area >= 10500 && area < 24000 && perimeter >= 575 && perimeter < 1500) return 100;
 
     else if (area >= 24000 && area < 27500 && perimeter >= 550 && perimeter < 700) return 50;
 
-    else if (area >= 19000 && area < 22000 && perimeter >= 510 && perimeter < 670) return 20;
+    else if (area >= 20000 && area < 22000 && perimeter >= 495 && perimeter < 670) return 20;
  
     else if (area >= 16000 && area < 18500 && perimeter >= 435 && perimeter < 620) return 10;
 
-    else if (area >= 17500 && area < 20500 && perimeter >= 450 && perimeter < 600) return 5;
+    else if (area >= 17500 && area < 20000 && perimeter >= 450 && perimeter < 600) return 5;
 
-    else if (area >= 12500 && area < 15500 && perimeter >= 410 && perimeter < 570) return 2;
+    else if (area >= 12500 && area < 15900 && perimeter >= 410 && perimeter < 570) return 2;
  
     else if (area >= 9600 && area < 12500 && perimeter >= 350 && perimeter < 600) return 1;
     

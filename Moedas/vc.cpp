@@ -6,6 +6,7 @@
 #include <math.h>
 #include <opencv2/core.hpp>
 #include "vc.h"
+#include <chrono>
 
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
@@ -150,27 +151,19 @@ int verificaPassouAntes(OVC* passou, OVC moedas, int cont) {
 }
 
 
-int idMoeda(int area, int perimeter, float circularity, cv::Vec3b meanColor) {
+int idMoeda(int area, int perimeter, float circularity, VEC3UC meanColor) {
     
     if (area > 35000 || area < 5000) return 0;
     if (circularity < 0.05) return 0;
- 
+
     if (area >= 24000 && area < 29000 && perimeter >= 650 && perimeter < 1300) return 200;
-
     else if (area >= 10500 && area < 24000 && perimeter >= 575 && perimeter < 1500) return 100;
-
     else if (area >= 24000 && area < 27500 && perimeter >= 550 && perimeter < 700) return 50;
-
     else if (area >= 20000 && area < 22000 && perimeter >= 495 && perimeter < 670) return 20;
- 
     else if (area >= 16000 && area < 18500 && perimeter >= 435 && perimeter < 620) return 10;
-
     else if (area >= 17500 && area < 20000 && perimeter >= 450 && perimeter < 600) return 5;
-
     else if (area >= 12500 && area < 15900 && perimeter >= 410 && perimeter < 570) return 2;
- 
     else if (area >= 9600 && area < 12500 && perimeter >= 350 && perimeter < 600) return 1;
-    
     else return 0;
 }
 
@@ -187,7 +180,11 @@ void escreverInfo(FILE* fp, int cont, int mTotal, int m200, int m100, int m50, i
     fprintf(fp, " -10 CENT: %d\n", m10);
     fprintf(fp, " -5 CENT: %d\n", m5);
     fprintf(fp, " -2 CENT: %d\n", m2);
-    fprintf(fp, " -1 CENT: %d\n\n", m1);
+    fprintf(fp, " -1 CENT: %d\n", m1);
+    fprintf(fp, "       ----------\n");
+    // Calcular valor total em euros
+    double valorTotal = m200 * 2.0 + m100 * 1.0 + m50 * 0.5 + m20 * 0.2 + m10 * 0.1 + m5 * 0.05 + m2 * 0.02 + m1 * 0.01;
+    fprintf(fp, "TOTAL:  %.2f EUR\n\n", valorTotal);
 }
 
 OVC* vc_binary_blob_labelling(cv::Mat src, cv::Mat dst, int* nlabels) {
@@ -662,12 +659,8 @@ int vc_draw_bounding_box(IVC* src, OVC blobs) {
     int y1 = blobs.y;
     int x2 = blobs.x + blobs.width - 1;
     int y2 = blobs.y + blobs.height - 1;
-    
-    // Garantir que estamos dentro dos limites da imagem
-    x1 = MAX(0, MIN(width - 1, x1));
-    y1 = MAX(0, MIN(height - 1, y1));
-    x2 = MAX(0, MIN(width - 1, x2));
-    y2 = MAX(0, MIN(height - 1, y2));
+
+    // Removido o clamping dos limites da imagem para garantir que a linha cobre o contorno real
     
     // Cor vermelha
     int color[3] = { 0, 0, 255 };
@@ -1017,5 +1010,44 @@ IVC* cv_mat_to_ivc(cv::Mat src) {
     }
     
     return ivc;
+}
+
+// Calcula a cor média (BGR) de uma região retangular (ROI) de uma imagem IVC.
+// Percorre todos os pixels da ROI e faz a média dos valores de cada canal.
+void mediaCorROI(const IVC* ivcImg, int x, int y, int width, int height, VEC3UC* meanColor) {
+    long sumB = 0, sumG = 0, sumR = 0, count = 0;
+    for (int j = y; j < y + height && j < ivcImg->height; ++j) {
+        for (int i = x; i < x + width && i < ivcImg->width; ++i) {
+            int pos = j * ivcImg->bytesperline + i * ivcImg->channels;
+            sumB += ivcImg->data[pos];
+            sumG += ivcImg->data[pos + 1];
+            sumR += ivcImg->data[pos + 2];
+            count++;
+        }
+    }
+    if (count == 0) count = 1;
+    meanColor->b = (unsigned char)(sumB / count);
+    meanColor->g = (unsigned char)(sumG / count);
+    meanColor->r = (unsigned char)(sumR / count);
+}
+
+void vc_timer(void) {
+    static bool running = false;
+    static std::chrono::steady_clock::time_point previousTime = std::chrono::steady_clock::now();
+
+    if (!running) {
+        running = true;
+        previousTime = std::chrono::steady_clock::now();
+    }
+    else {
+        std::chrono::steady_clock::time_point currentTime = std::chrono::steady_clock::now();
+        std::chrono::steady_clock::duration elapsedTime = currentTime - previousTime;
+        std::chrono::duration<double> time_span = std::chrono::duration_cast<std::chrono::duration<double>>(elapsedTime);
+        double nseconds = time_span.count();
+        printf("Tempo decorrido: %.6f segundos\n", nseconds);
+        printf("Pressione ENTER para continuar...\n");
+        getchar();
+        running = false;
+    }
 }
 

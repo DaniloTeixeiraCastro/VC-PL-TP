@@ -34,6 +34,10 @@ typedef struct {
     double circularity;       
 } OVC;
 
+typedef struct {
+    unsigned char b, g, r;
+} VEC3UC;
+
 // FUNÇÕES: ALOCAR E LIBERTAR UMA IMAGEM
 IVC* vc_image_new(int width, int height, int channels, int levels);
 IVC* vc_image_free(IVC* image);
@@ -64,9 +68,10 @@ int desenha_linhaVermelha(cv::Mat frame);
 int desenha_linhaVerde(cv::Mat frame);
 int idBlobs(cv::Mat frameIn, cv::Mat frameOut, int hueMin, int hueMax, float satMin, float satMax, int valueMin, int valueMax);
 int verificaPassouAntes(OVC* passou, OVC moedas, int cont);
-int idMoeda(int area, int perimeter, float circularity, cv::Vec3b meanColor);
-cv::Vec3b mediaCorROI(const cv::Mat& img, int x, int y, int width, int height);
+int idMoeda(int area, int perimeter, float circularity, VEC3UC meanColor);
 void escreverInfo(FILE* fp, int cont, int mTotal, int m200, int m100, int m50, int m20, int m10, int m5, int m2, int m1, const char* videofile);
+void mediaCorROI(const IVC* ivcImg, int x, int y, int width, int height, VEC3UC* meanColor);
+void vc_timer(void);
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //                   FUNÇÕES DE CONVERSÃO MAT-IVC

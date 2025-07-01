@@ -9,31 +9,9 @@
 #include <vector>
 #include <iomanip>
 
-// Função usando apenas IVC para calcular média de cor
-cv::Vec3b mediaCorROI_IVC(const cv::Mat& img, int x, int y, int width, int height) {
-    // Converter Mat para IVC
-    IVC* ivcImg = cv_mat_to_ivc(img);
-    if (!ivcImg) return cv::Vec3b(0, 0, 0);
-    
-    long sumB = 0, sumG = 0, sumR = 0, count = 0;
-    
-    for (int j = y; j < y + height && j < ivcImg->height; ++j) {
-        for (int i = x; i < x + width && i < ivcImg->width; ++i) {
-            int pos = j * ivcImg->bytesperline + i * ivcImg->channels;
-            sumB += ivcImg->data[pos];     // Blue
-            sumG += ivcImg->data[pos + 1]; // Green  
-            sumR += ivcImg->data[pos + 2]; // Red
-            count++;
-        }
-    }
-    
-    vc_image_free(ivcImg);
-    
-    if (count == 0) return cv::Vec3b(0, 0, 0);
-    return cv::Vec3b((uchar)(sumB / count), (uchar)(sumG / count), (uchar)(sumR / count));
-}
-
 int main(int argc, const char* argv[]) {
+    // Inicia o timer
+    vc_timer();
     std::string videofile;
     if (argc == 2) {
 
@@ -71,9 +49,9 @@ int main(int argc, const char* argv[]) {
 
     cv::namedWindow("Detetor de moedas", cv::WINDOW_AUTOSIZE);
 
-    //--- Valores HSV fixos (removendo trackbars OpenCV) ---
+    //--- Valores HSV fixos (removendo trackbars) ---
     //cv::namedWindow("Segmentacao HSV", cv::WINDOW_AUTOSIZE);
-    //const int hmin = 10, hmax = 80, smin = 25, smax = 255, vmin = 20, vmax = 150;
+    //const int hmin = 10, hmax = 75, smin = 21, smax = 255, vmin = 20, vmax = 150;
 
 
     std::vector<OVC> passou;
@@ -125,7 +103,7 @@ int main(int argc, const char* argv[]) {
         vc_erode(ivcIn, ivcTemp1, 5);
         vc_dilate(ivcTemp1, ivcTemp2, 5);
 
-        // Fechamento: dilatação seguida de erosão
+        // Fecho: dilatação seguida de erosão
         vc_dilate(ivcTemp2, ivcTemp1, 5);
         vc_erode(ivcTemp1, ivcOut, 5);
 
@@ -191,8 +169,11 @@ int main(int argc, const char* argv[]) {
                 }
 
                 
-                cv::Vec3b meanColor = mediaCorROI_IVC(frameorig, moedas[i].x, moedas[i].y, moedas[i].width, moedas[i].height);
-                
+                IVC* ivcFrameColor = cv_mat_to_ivc(frameorig);
+                VEC3UC meanColor;
+                mediaCorROI(ivcFrameColor, moedas[i].x, moedas[i].y, moedas[i].width, moedas[i].height, &meanColor);
+                vc_image_free(ivcFrameColor);
+                // Chamar idMoeda sem OpenCV
                 int tipo = idMoeda(moedas[i].area, moedas[i].perimeter, moedas[i].circularity, meanColor);
                 std::string tipoText;
                 if (tipo != 0 && moedas[i].circularity > 0.1) {
@@ -337,5 +318,7 @@ int main(int argc, const char* argv[]) {
     cv::destroyWindow("Detetor de moedas");
     //cv::destroyWindow("Segmentacao HSV");
     std::cout << "Programa terminado.\n";
+    // Para o timer e exibe o tempo decorrido
+    vc_timer();
     return 0;
 }

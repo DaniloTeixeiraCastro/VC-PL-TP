@@ -126,182 +126,82 @@ int main(int argc, const char* argv[]) {
 
         desenha_linhaVermelha(frameorig);       
             for (int i = 0; i < nMoedas; i++) {
-            if (moedas[i].area > 8000) {                // Converter a imagem para o formato IVC para desenhar texto
-                IVC* ivcFrame = cv_mat_to_ivc(frameorig);
-                if (ivcFrame != NULL) {
-                    int colorBlack[3] = { 0, 0, 0 };   // Cor preta para sombra
-                    int colorBlue[3] = { 255, 8, 0 };  // Cor azul para texto (BGR)
-                    
+                if (moedas[i].area > 8000) {
                     // Coordenadas
                     std::string text = "x: " + std::to_string(moedas[i].xc) + ", y: " + std::to_string(moedas[i].yc);
-                    // Texto com sombra
-                    vc_put_text(ivcFrame, text.c_str(), moedas[i].xc + 90, moedas[i].yc - 60, colorBlack, 1);
-                    // Texto principal
-                    vc_put_text(ivcFrame, text.c_str(), moedas[i].xc + 89, moedas[i].yc - 61, colorBlue, 1);
-                    
+                    cv::putText(frameorig, text, cv::Point(moedas[i].xc + 90, moedas[i].yc - 60), cv::FONT_HERSHEY_SIMPLEX, 0.6, cv::Scalar(0,0,0), 2, cv::LINE_AA);
+                    cv::putText(frameorig, text, cv::Point(moedas[i].xc + 89, moedas[i].yc - 61), cv::FONT_HERSHEY_SIMPLEX, 0.6, cv::Scalar(255,8,0), 1, cv::LINE_AA);
                     // Área
                     text = "AREA: " + std::to_string(moedas[i].area);
-                    // Texto com sombra
-                    vc_put_text(ivcFrame, text.c_str(), moedas[i].xc + 90, moedas[i].yc - 40, colorBlack, 1);
-                    // Texto principal
-                    vc_put_text(ivcFrame, text.c_str(), moedas[i].xc + 89, moedas[i].yc - 41, colorBlue, 1);
-                    
+                    cv::putText(frameorig, text, cv::Point(moedas[i].xc + 90, moedas[i].yc - 40), cv::FONT_HERSHEY_SIMPLEX, 0.6, cv::Scalar(0,0,0), 2, cv::LINE_AA);
+                    cv::putText(frameorig, text, cv::Point(moedas[i].xc + 89, moedas[i].yc - 41), cv::FONT_HERSHEY_SIMPLEX, 0.6, cv::Scalar(255,8,0), 1, cv::LINE_AA);
                     // Perímetro
                     text = "PERIMETRO: " + std::to_string(moedas[i].perimeter);
-                    // Texto com sombra
-                    vc_put_text(ivcFrame, text.c_str(), moedas[i].xc + 90, moedas[i].yc - 20, colorBlack, 1);
-                    // Texto principal
-                    vc_put_text(ivcFrame, text.c_str(), moedas[i].xc + 89, moedas[i].yc - 21, colorBlue, 1);
-                    
+                    cv::putText(frameorig, text, cv::Point(moedas[i].xc + 90, moedas[i].yc - 20), cv::FONT_HERSHEY_SIMPLEX, 0.6, cv::Scalar(0,0,0), 2, cv::LINE_AA);
+                    cv::putText(frameorig, text, cv::Point(moedas[i].xc + 89, moedas[i].yc - 21), cv::FONT_HERSHEY_SIMPLEX, 0.6, cv::Scalar(255,8,0), 1, cv::LINE_AA);
                     // Circularidade
                     text = "CIRCULARIDADE: " + std::to_string(moedas[i].circularity).substr(0, 5);
-                    // Texto com sombra
-                    vc_put_text(ivcFrame, text.c_str(), moedas[i].xc + 90, moedas[i].yc, colorBlack, 1);
-                    // Texto principal
-                    vc_put_text(ivcFrame, text.c_str(), moedas[i].xc + 89, moedas[i].yc - 1, colorBlue, 1);
-                    
-                    // Copiar resultado de volta para a matriz OpenCV
-                    cv::Mat temp(frameorig.rows, frameorig.cols, CV_8UC3, ivcFrame->data);
-                    temp.copyTo(frameorig);
-                    
-                    // Liberar memória
-                    vc_image_free(ivcFrame);
-                }
-
-                
-                IVC* ivcFrameColor = cv_mat_to_ivc(frameorig);
-                VEC3UC meanColor;
-                mediaCorROI(ivcFrameColor, moedas[i].x, moedas[i].y, moedas[i].width, moedas[i].height, &meanColor);
-                vc_image_free(ivcFrameColor);
-                // Chamar idMoeda sem OpenCV
-                int tipo = idMoeda(moedas[i].area, moedas[i].perimeter, moedas[i].circularity, meanColor);
-                std::string tipoText;
-                if (tipo != 0 && moedas[i].circularity > 0.1) {
+                    cv::putText(frameorig, text, cv::Point(moedas[i].xc + 90, moedas[i].yc), cv::FONT_HERSHEY_SIMPLEX, 0.6, cv::Scalar(0,0,0), 2, cv::LINE_AA);
+                    cv::putText(frameorig, text, cv::Point(moedas[i].xc + 89, moedas[i].yc - 1), cv::FONT_HERSHEY_SIMPLEX, 0.6, cv::Scalar(255,8,0), 1, cv::LINE_AA);
+                    // Tipo
+                    int tipo = idMoeda(moedas[i].area, moedas[i].perimeter, moedas[i].circularity, meanColor);
+                    std::string tipoText;
                     switch (tipo) {
-                    case 200: tipoText = "2 EUR"; break;
-                    case 100: tipoText = "1 EUR"; break;
-                    case 50: tipoText = "50 CENT"; break;
-                    case 20: tipoText = "20 CENT"; break;
-                    case 10: tipoText = "10 CENT"; break;
-                    case 5: tipoText = "5 CENT"; break;
-                    case 2: tipoText = "2 CENT"; break;
-                    case 1: tipoText = "1 CENT"; break;
-                    default: tipoText = "DESCONHECIDO"; break;
+                        case 200: tipoText = "2 EUR"; break;
+                        case 100: tipoText = "1 EUR"; break;
+                        case 50: tipoText = "50 CENT"; break;
+                        case 20: tipoText = "20 CENT"; break;
+                        case 10: tipoText = "10 CENT"; break;
+                        case 5: tipoText = "5 CENT"; break;
+                        case 2: tipoText = "2 CENT"; break;
+                        case 1: tipoText = "1 CENT"; break;
+                        default: tipoText = "DESCONHECIDO"; break;
                     }
-                    std::string text = "Valor: " + tipoText;
-                    // Converter a imagem para o formato IVC para desenhar texto
-                    IVC* ivcFrame = cv_mat_to_ivc(frameorig);
-                    if (ivcFrame != NULL) {
-                        int colorBlack[3] = { 0, 0, 0 };  // Cor preta para texto
-                        
-                        // Texto com sombra
-                        vc_put_text(ivcFrame, text.c_str(), moedas[i].xc + 90, moedas[i].yc + 20, colorBlack, 1);
-                        // Texto principal (um pouco deslocado para criar efeito de shadow)
-                        vc_put_text(ivcFrame, text.c_str(), moedas[i].xc + 89, moedas[i].yc + 19, colorBlack, 1);
-                        
-                        // Copiar resultado de volta para a matriz OpenCV
-                        cv::Mat temp(frameorig.rows, frameorig.cols, CV_8UC3, ivcFrame->data);
-                        temp.copyTo(frameorig);
-                        
-                        // Liberar memória
-                        vc_image_free(ivcFrame);
-                    }
-
-                    vc_desenha_bounding_box(frameorig, moedas[i]);
-
-                    if (height / 4 >= moedas[i].yc - 15 && height / 4 <= moedas[i].yc + 20) {
-                        desenha_linhaVerde(frameorig);
-                        if (passou.size() == 0) {
-                            passou.push_back(moedas[i]);
-                            cont++; mTotal++;
-                            switch (tipo) {
-                            case 200: m200++; soma += 2.0f; break;
-                            case 100: m100++; soma += 1.0f; break;
-                            case 50: m50++; soma += 0.5f; break;
-                            case 20: m20++; soma += 0.2f; break;
-                            case 10: m10++; soma += 0.1f; break;
-                            case 5: m5++; soma += 0.05f; break;
-                            case 2: m2++; soma += 0.02f; break;
-                            case 1: m1++; soma += 0.01f; break;
-                            }
-                        }
-                        else {
-                            int p = verificaPassouAntes(passou.data(), moedas[i], cont);
-                            if (p == 1) {
-                                passou.push_back(moedas[i]);
-                                cont++; mTotal++;
-                                switch (tipo) {
-                                case 200: m200++; soma += 2.0f; break;
-                                case 100: m100++; soma += 1.0f; break;
-                                case 50: m50++; soma += 0.5f; break;
-                                case 20: m20++; soma += 0.2f; break;
-                                case 10: m10++; soma += 0.1f; break;
-                                case 5: m5++; soma += 0.05f; break;
-                                case 2: m2++; soma += 0.02f; break;
-                                case 1: m1++; soma += 0.01f; break;
-                                }
-                            }
-                        }
-                    }
+                    text = "Tipo: " + tipoText;
+                    cv::putText(frameorig, text, cv::Point(moedas[i].xc + 90, moedas[i].yc + 20), cv::FONT_HERSHEY_SIMPLEX, 0.6, cv::Scalar(0,0,0), 2, cv::LINE_AA);
+                    cv::putText(frameorig, text, cv::Point(moedas[i].xc + 89, moedas[i].yc + 19), cv::FONT_HERSHEY_SIMPLEX, 0.6, cv::Scalar(0,0,0), 1, cv::LINE_AA);
                 }
             }
         }        std::ostringstream oss;
         oss << std::fixed << std::setprecision(2) << soma;
         
-        // Converter a imagem para o formato IVC para desenhar texto de estatísticas
-        IVC* ivcFrame = cv_mat_to_ivc(frameorig);
-        if (ivcFrame != NULL) {
-            int colorBlack[3] = { 0, 0, 0 };  // Cor preta
-            int y_offset = 30;
-              // Total de moedas
-            std::string text = "TOTAL DE MOEDAS: " + std::to_string(mTotal);
-            vc_put_text(ivcFrame, text.c_str(), 20, y_offset, colorBlack, 1);
-            y_offset += 20;
-            
-            // Valor total
-            text = "TOTAL: " + oss.str();
-            vc_put_text(ivcFrame, text.c_str(), 20, y_offset, colorBlack, 1);
-            y_offset += 20;
-            
-            // Contagens por tipo de moeda
-            text = "2 EUR: " + std::to_string(m200);
-            vc_put_text(ivcFrame, text.c_str(), 20, y_offset, colorBlack, 1);
-            y_offset += 20;
-            
-            text = "1 EUR: " + std::to_string(m100);
-            vc_put_text(ivcFrame, text.c_str(), 20, y_offset, colorBlack, 1);
-            y_offset += 20;
-            
-            text = "50 CENT: " + std::to_string(m50);
-            vc_put_text(ivcFrame, text.c_str(), 20, y_offset, colorBlack, 1);
-            y_offset += 20;
-            
-            text = "20 CENT: " + std::to_string(m20);
-            vc_put_text(ivcFrame, text.c_str(), 20, y_offset, colorBlack, 1);
-            y_offset += 20;
-            
-            text = "10 CENT: " + std::to_string(m10);
-            vc_put_text(ivcFrame, text.c_str(), 20, y_offset, colorBlack, 1);
-            y_offset += 20;
-            
-            text = "5 CENT: " + std::to_string(m5);
-            vc_put_text(ivcFrame, text.c_str(), 20, y_offset, colorBlack, 1);
-            y_offset += 20;
-            
-            text = "2 CENT: " + std::to_string(m2);
-            vc_put_text(ivcFrame, text.c_str(), 20, y_offset, colorBlack, 1);
-            y_offset += 20;
-            
-            text = "1 CENT: " + std::to_string(m1);
-            vc_put_text(ivcFrame, text.c_str(), 20, y_offset, colorBlack, 1);
-            
-            // Copiar resultado de volta para a matriz OpenCV
-            cv::Mat temp(frameorig.rows, frameorig.cols, CV_8UC3, ivcFrame->data);
-            temp.copyTo(frameorig);
-            
-            // Liberar memória
-            vc_image_free(ivcFrame);
-        }
+        // Substituir bloco de texto estatístico por OpenCV putText
+        int y_offset = 30;
+        int fontFace = cv::FONT_HERSHEY_SIMPLEX;
+        double fontScale = 0.6;
+        int thickness = 1;
+        cv::Scalar color(0, 0, 0); // Preto (BGR)
+        
+        std::string text = "TOTAL DE MOEDAS: " + std::to_string(mTotal);
+        cv::putText(frameorig, text, cv::Point(20, y_offset), fontFace, fontScale, color, thickness, cv::LINE_AA);
+        y_offset += 20;
+        text = "TOTAL: " + oss.str();
+        cv::putText(frameorig, text, cv::Point(20, y_offset), fontFace, fontScale, color, thickness, cv::LINE_AA);
+        y_offset += 20;
+        text = "2 EUR: " + std::to_string(m200);
+        cv::putText(frameorig, text, cv::Point(20, y_offset), fontFace, fontScale, color, thickness, cv::LINE_AA);
+        y_offset += 20;
+        text = "1 EUR: " + std::to_string(m100);
+        cv::putText(frameorig, text, cv::Point(20, y_offset), fontFace, fontScale, color, thickness, cv::LINE_AA);
+        y_offset += 20;
+        text = "50 CENT: " + std::to_string(m50);
+        cv::putText(frameorig, text, cv::Point(20, y_offset), fontFace, fontScale, color, thickness, cv::LINE_AA);
+        y_offset += 20;
+        text = "20 CENT: " + std::to_string(m20);
+        cv::putText(frameorig, text, cv::Point(20, y_offset), fontFace, fontScale, color, thickness, cv::LINE_AA);
+        y_offset += 20;
+        text = "10 CENT: " + std::to_string(m10);
+        cv::putText(frameorig, text, cv::Point(20, y_offset), fontFace, fontScale, color, thickness, cv::LINE_AA);
+        y_offset += 20;
+        text = "5 CENT: " + std::to_string(m5);
+        cv::putText(frameorig, text, cv::Point(20, y_offset), fontFace, fontScale, color, thickness, cv::LINE_AA);
+        y_offset += 20;
+        text = "2 CENT: " + std::to_string(m2);
+        cv::putText(frameorig, text, cv::Point(20, y_offset), fontFace, fontScale, color, thickness, cv::LINE_AA);
+        y_offset += 20;
+        text = "1 CENT: " + std::to_string(m1);
+        cv::putText(frameorig, text, cv::Point(20, y_offset), fontFace, fontScale, color, thickness, cv::LINE_AA);
+        y_offset += 20;
 
         cv::imshow("Detetor de moedas", frameorig);
         cv::waitKey(1);

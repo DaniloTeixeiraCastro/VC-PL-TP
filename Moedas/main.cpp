@@ -19,16 +19,16 @@ int main(int argc, const char* argv[]) {
     }
     else {
         std::cout << "Escolha o video para processar:\n";
-        std::cout << "1 - C:/Projetos/Moedas/videos/video1.mp4\n";
-        std::cout << "2 - C:/Projetos/Moedas/videos/video2.mp4\n";
+        std::cout << "1 - C:/VC-PL-TP/videos/video1.mp4\n";
+        std::cout << "2 - C:/VC-PL-TP/videos/video2.mp4\n";
         std::cout << "Opcao: ";
         int opcao = 0;
         std::cin >> opcao;
         if (opcao == 1) {
-            videofile = "C:/Projetos/Moedas/videos/video1.mp4";
+            videofile = "C:/VC-PL-TP/videos/video1.mp4";
         }
         else if (opcao == 2) {
-            videofile = "C:/Projetos/Moedas/videos/video2.mp4";
+            videofile = "C:/VC-PL-TP/videos/video1.mp4";
         }
         else {
             std::cerr << "Opcao inválida!\n";
@@ -134,29 +134,21 @@ int main(int argc, const char* argv[]) {
                     
                     // Coordenadas
                     std::string text = "x: " + std::to_string(moedas[i].xc) + ", y: " + std::to_string(moedas[i].yc);
-                    // Texto com sombra
-                    vc_put_text(ivcFrame, text.c_str(), moedas[i].xc + 90, moedas[i].yc - 60, colorBlack, 1);
                     // Texto principal
                     vc_put_text(ivcFrame, text.c_str(), moedas[i].xc + 89, moedas[i].yc - 61, colorBlue, 1);
                     
                     // Área
                     text = "AREA: " + std::to_string(moedas[i].area);
-                    // Texto com sombra
-                    vc_put_text(ivcFrame, text.c_str(), moedas[i].xc + 90, moedas[i].yc - 40, colorBlack, 1);
                     // Texto principal
                     vc_put_text(ivcFrame, text.c_str(), moedas[i].xc + 89, moedas[i].yc - 41, colorBlue, 1);
                     
                     // Perímetro
                     text = "PERIMETRO: " + std::to_string(moedas[i].perimeter);
-                    // Texto com sombra
-                    vc_put_text(ivcFrame, text.c_str(), moedas[i].xc + 90, moedas[i].yc - 20, colorBlack, 1);
                     // Texto principal
                     vc_put_text(ivcFrame, text.c_str(), moedas[i].xc + 89, moedas[i].yc - 21, colorBlue, 1);
                     
                     // Circularidade
                     text = "CIRCULARIDADE: " + std::to_string(moedas[i].circularity).substr(0, 5);
-                    // Texto com sombra
-                    vc_put_text(ivcFrame, text.c_str(), moedas[i].xc + 90, moedas[i].yc, colorBlack, 1);
                     // Texto principal
                     vc_put_text(ivcFrame, text.c_str(), moedas[i].xc + 89, moedas[i].yc - 1, colorBlue, 1);
                     
@@ -194,8 +186,6 @@ int main(int argc, const char* argv[]) {
                     if (ivcFrame != NULL) {
                         int colorBlack[3] = { 0, 0, 0 };  // Cor preta para texto
                         
-                        // Texto com sombra
-                        vc_put_text(ivcFrame, text.c_str(), moedas[i].xc + 90, moedas[i].yc + 20, colorBlack, 1);
                         // Texto principal (um pouco deslocado para criar efeito de shadow)
                         vc_put_text(ivcFrame, text.c_str(), moedas[i].xc + 89, moedas[i].yc + 19, colorBlack, 1);
                         

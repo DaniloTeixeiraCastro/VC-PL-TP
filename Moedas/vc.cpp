@@ -12,7 +12,7 @@
 #define M_PI 3.14159265358979323846
 #endif
 
-// FUNÇÕES: ALOCAR E LIBERTAR UMA IMAGEM (ADAPTADAS DO VC.C ORIGINAL)
+// FUNÇÕES: ALOCAR E LIBERTAR UMA IMAGEM
 IVC* vc_image_new(int width, int height, int channels, int levels) {
     IVC* image = (IVC*)malloc(sizeof(IVC));
     if (image == NULL) return NULL;
@@ -149,7 +149,6 @@ int verificaPassouAntes(OVC* passou, OVC moedas, int cont) {
     if (cont == 0) return 1;
     return (moedas.xc < passou[cont - 1].xc - 10 || moedas.xc > passou[cont - 1].xc + 10) ? 1 : 0;
 }
-
 
 int idMoeda(int area, int perimeter, float circularity, VEC3UC meanColor) {
     
@@ -843,7 +842,7 @@ int vc_draw_circle(IVC* src, int xc, int yc, int radius, int color[3], int fill)
     return 1;
 }
 
-// FUNÇÕES DE CONVERSÃO ENTRE CV::MAT E IVC
+// FUNÇÃO DE CONVERSÃO ENTRE CV::MAT E IVC
 IVC* cv_mat_to_ivc(cv::Mat src) {
     IVC* ivc = NULL;
     
@@ -859,7 +858,7 @@ IVC* cv_mat_to_ivc(cv::Mat src) {
     return ivc;
 }
 
-// Calcula a cor média (BGR) de uma região retangular (ROI) de uma imagem IVC.
+// FUNÇÃO para calcular a cor média (BGR) de uma região retangular (ROI) de uma imagem IVC.
 // Percorre todos os pixels da ROI e faz a média dos valores de cada canal.
 void mediaCorROI(const IVC* ivcImg, int x, int y, int width, int height, VEC3UC* meanColor) {
     long sumB = 0, sumG = 0, sumR = 0, count = 0;
@@ -878,6 +877,7 @@ void mediaCorROI(const IVC* ivcImg, int x, int y, int width, int height, VEC3UC*
     meanColor->r = (unsigned char)(sumR / count);
 }
 
+// FUNÇÃO para calcular o tempo decorrido
 void vc_timer(void) {
     static bool running = false;
     static std::chrono::steady_clock::time_point previousTime = std::chrono::steady_clock::now();

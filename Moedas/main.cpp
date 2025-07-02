@@ -51,7 +51,7 @@ int main(int argc, const char* argv[]) {
 
     cv::namedWindow("Detetor de moedas", cv::WINDOW_AUTOSIZE);
 
-    //--- Valores HSV fixos (removendo trackbars) ---
+    //--- Valores HSV fixos ---
     //cv::namedWindow("Segmentacao HSV", cv::WINDOW_AUTOSIZE);
     //const int hmin = 10, hmax = 75, smin = 21, smax = 255, vmin = 20, vmax = 150;
 
@@ -84,14 +84,14 @@ int main(int argc, const char* argv[]) {
 
         cv::Mat framethr(frameorig.size(), CV_8UC1);
 
-        // Passe os valores fixos para a função de segmentação
+        // Passar os valores fixos para a função de segmentação
         //if (!idBlobs(frameorig, framethr, hmin, hmax, smin, smax, vmin, vmax)) {
         //    std::cerr << "Erro na segmentação HSV!\n"; continue;
         //}
 
         //cv::imshow("Segmentacao HSV", framethr);
 
-        if (!idBlobs(frameorig, framethr, 10, 75, 21, 255, 20, 150)) {
+        if (!idBlobs(frameorig, framethr, 10, 65, 21, 255, 20, 150)) {
             std::cerr << "Erro na segmentação HSV!\n"; continue;
         }
 

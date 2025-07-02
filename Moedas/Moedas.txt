@@ -63,3 +63,42 @@ NUMERO DE MOEDAS: 29
        ----------
 TOTAL:  7.51 EUR
 
+== VIDEO: C:/Projetos/Moedas/videos/video1.mp4 | HORA: 2-7-2025 10:3:25 ==
+NUMERO DE MOEDAS: 12
+ -2 EUROS: 1
+ -1 EURO: 2
+ -50 CENT: 1
+ -20 CENT: 2
+ -10 CENT: 2
+ -5 CENT: 1
+ -2 CENT: 1
+ -1 CENT: 2
+       ----------
+TOTAL:  5.19 EUR
+
+== VIDEO: C:/Projetos/Moedas/videos/video1.mp4 | HORA: 2-7-2025 10:25:52 ==
+NUMERO DE MOEDAS: 12
+ -2 EUROS: 1
+ -1 EURO: 2
+ -50 CENT: 1
+ -20 CENT: 2
+ -10 CENT: 2
+ -5 CENT: 1
+ -2 CENT: 1
+ -1 CENT: 2
+       ----------
+TOTAL:  5.19 EUR
+
+== VIDEO: C:/Projetos/Moedas/videos/video2.mp4 | HORA: 2-7-2025 10:34:13 ==
+NUMERO DE MOEDAS: 29
+ -2 EUROS: 1
+ -1 EURO: 3
+ -50 CENT: 1
+ -20 CENT: 6
+ -10 CENT: 5
+ -5 CENT: 4
+ -2 CENT: 2
+ -1 CENT: 7
+       ----------
+TOTAL:  7.51 EUR
+

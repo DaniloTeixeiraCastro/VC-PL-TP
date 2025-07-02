@@ -14,7 +14,7 @@
 #endif
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-//                   ESTRUTURA DE UMA IMAGEM MANUAL
+//                   ESTRUTURA DE UMA IMAGEM 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 typedef struct {
     unsigned char* data;
@@ -24,6 +24,9 @@ typedef struct {
     int bytesperline;   // width * channels
 } IVC;
 
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//                   ESTRUTURA DE UM OBJETO (BLOB)
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 typedef struct {
     int x, y, width, height;  
     int area;                 
@@ -34,9 +37,14 @@ typedef struct {
     double circularity;       
 } OVC;
 
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//                   ESTRUTURA DE UM VECTOR
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 typedef struct {
     unsigned char b, g, r;
 } VEC3UC;
+
+
 
 // FUNÇÕES: ALOCAR E LIBERTAR UMA IMAGEM
 IVC* vc_image_new(int width, int height, int channels, int levels);
@@ -72,8 +80,6 @@ void escreverInfo(FILE* fp, int cont, int mTotal, int m200, int m100, int m50, i
 void mediaCorROI(const IVC* ivcImg, int x, int y, int width, int height, VEC3UC* meanColor);
 void vc_timer(void);
 
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-//                   FUNÇÕES DE CONVERSÃO MAT-IVC
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// FUNÇÕES: CONVERSÃO MAT-IVC
 IVC* cv_mat_to_ivc(cv::Mat src);
 

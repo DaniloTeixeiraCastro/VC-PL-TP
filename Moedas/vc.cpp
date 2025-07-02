@@ -843,7 +843,6 @@ int vc_draw_circle(IVC* src, int xc, int yc, int radius, int color[3], int fill)
     return 1;
 }
 
-
 // FUNÇÕES DE CONVERSÃO ENTRE CV::MAT E IVC
 IVC* cv_mat_to_ivc(cv::Mat src) {
     IVC* ivc = NULL;

@@ -57,7 +57,6 @@ int vc_desenha_bounding_box(cv::Mat src, OVC blobs);
 int vc_draw_bounding_box(IVC* src, OVC blobs);
 int vc_draw_line(IVC* src, int x1, int y1, int x2, int y2, int color[3]);
 int vc_draw_circle(IVC* src, int xc, int yc, int radius, int color[3], int fill);
-int vc_put_text(IVC* src, const char* text, int x, int y, int color[3], int fontsize);
 
 // FUNÇÕES: MORFOLOGIA
 int vc_dilate(IVC* src, IVC* dst, int kernel_size);

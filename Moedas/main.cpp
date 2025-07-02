@@ -8,10 +8,12 @@
 #include <string>
 #include <vector>
 #include <iomanip>
+#include <chrono>
 
 int main(int argc, const char* argv[]) {
     // Inicia o timer
     vc_timer();
+    auto start_time = std::chrono::steady_clock::now();
     std::string videofile;
     if (argc == 2) {
 
@@ -19,8 +21,8 @@ int main(int argc, const char* argv[]) {
     }
     else {
         std::cout << "Escolha o video para processar:\n";
-        std::cout << "1 - C:/Projetos/Moedas/videos/video1.mp4\n";
-        std::cout << "2 - C:/Projetos/Moedas/videos/video2.mp4\n";
+        std::cout << "1 - VIDEO 1\n";
+        std::cout << "2 - VIDEO 2\n\n";
         std::cout << "Opcao: ";
         int opcao = 0;
         std::cin >> opcao;
@@ -126,56 +128,116 @@ int main(int argc, const char* argv[]) {
 
         desenha_linhaVermelha(frameorig);       
             for (int i = 0; i < nMoedas; i++) {
-                if (moedas[i].area > 8000) {
-                    // Coordenadas
-                    std::string text = "x: " + std::to_string(moedas[i].xc) + ", y: " + std::to_string(moedas[i].yc);
-                    cv::putText(frameorig, text, cv::Point(moedas[i].xc + 90, moedas[i].yc - 60), cv::FONT_HERSHEY_SIMPLEX, 0.6, cv::Scalar(0,0,0), 2, cv::LINE_AA);
-                    cv::putText(frameorig, text, cv::Point(moedas[i].xc + 89, moedas[i].yc - 61), cv::FONT_HERSHEY_SIMPLEX, 0.6, cv::Scalar(255,8,0), 1, cv::LINE_AA);
-                    // Área
-                    text = "AREA: " + std::to_string(moedas[i].area);
-                    cv::putText(frameorig, text, cv::Point(moedas[i].xc + 90, moedas[i].yc - 40), cv::FONT_HERSHEY_SIMPLEX, 0.6, cv::Scalar(0,0,0), 2, cv::LINE_AA);
-                    cv::putText(frameorig, text, cv::Point(moedas[i].xc + 89, moedas[i].yc - 41), cv::FONT_HERSHEY_SIMPLEX, 0.6, cv::Scalar(255,8,0), 1, cv::LINE_AA);
-                    // Perímetro
-                    text = "PERIMETRO: " + std::to_string(moedas[i].perimeter);
-                    cv::putText(frameorig, text, cv::Point(moedas[i].xc + 90, moedas[i].yc - 20), cv::FONT_HERSHEY_SIMPLEX, 0.6, cv::Scalar(0,0,0), 2, cv::LINE_AA);
-                    cv::putText(frameorig, text, cv::Point(moedas[i].xc + 89, moedas[i].yc - 21), cv::FONT_HERSHEY_SIMPLEX, 0.6, cv::Scalar(255,8,0), 1, cv::LINE_AA);
-                    // Circularidade
-                    text = "CIRCULARIDADE: " + std::to_string(moedas[i].circularity).substr(0, 5);
-                    cv::putText(frameorig, text, cv::Point(moedas[i].xc + 90, moedas[i].yc), cv::FONT_HERSHEY_SIMPLEX, 0.6, cv::Scalar(0,0,0), 2, cv::LINE_AA);
-                    cv::putText(frameorig, text, cv::Point(moedas[i].xc + 89, moedas[i].yc - 1), cv::FONT_HERSHEY_SIMPLEX, 0.6, cv::Scalar(255,8,0), 1, cv::LINE_AA);
-                    // Tipo
-                    int tipo = idMoeda(moedas[i].area, moedas[i].perimeter, moedas[i].circularity, meanColor);
-                    std::string tipoText;
+            if (moedas[i].area > 8000) {
+                // Coordenadas
+                std::string text = "x: " + std::to_string(moedas[i].xc) + ", y: " + std::to_string(moedas[i].yc);
+                cv::putText(frameorig, text, cv::Point(moedas[i].xc + 89, moedas[i].yc - 61), cv::FONT_HERSHEY_SIMPLEX, 0.45, cv::Scalar(255,8,0), 1, cv::LINE_AA);
+                // Área
+                text = "AREA: " + std::to_string(moedas[i].area);
+                cv::putText(frameorig, text, cv::Point(moedas[i].xc + 89, moedas[i].yc - 41), cv::FONT_HERSHEY_SIMPLEX, 0.45, cv::Scalar(255,8,0), 1, cv::LINE_AA);
+                // Perímetro
+                text = "PERIMETRO: " + std::to_string(moedas[i].perimeter);
+                cv::putText(frameorig, text, cv::Point(moedas[i].xc + 89, moedas[i].yc - 21), cv::FONT_HERSHEY_SIMPLEX, 0.45, cv::Scalar(255,8,0), 1, cv::LINE_AA);
+                // Circularidade
+                text = "CIRCULARIDADE: " + std::to_string(moedas[i].circularity).substr(0, 5);
+                cv::putText(frameorig, text, cv::Point(moedas[i].xc + 89, moedas[i].yc - 1), cv::FONT_HERSHEY_SIMPLEX, 0.45, cv::Scalar(255,8,0), 1, cv::LINE_AA);
+                
+                IVC* ivcFrameColor = cv_mat_to_ivc(frameorig);
+                VEC3UC meanColor;
+                mediaCorROI(ivcFrameColor, moedas[i].x, moedas[i].y, moedas[i].width, moedas[i].height, &meanColor);
+                vc_image_free(ivcFrameColor);
+                
+                int tipo = idMoeda(moedas[i].area, moedas[i].perimeter, moedas[i].circularity, meanColor);
+                std::string tipoText;
+                if (tipo != 0 && moedas[i].circularity > 0.1) {
                     switch (tipo) {
-                        case 200: tipoText = "2 EUR"; break;
-                        case 100: tipoText = "1 EUR"; break;
-                        case 50: tipoText = "50 CENT"; break;
-                        case 20: tipoText = "20 CENT"; break;
-                        case 10: tipoText = "10 CENT"; break;
-                        case 5: tipoText = "5 CENT"; break;
-                        case 2: tipoText = "2 CENT"; break;
-                        case 1: tipoText = "1 CENT"; break;
-                        default: tipoText = "DESCONHECIDO"; break;
+                    case 200: tipoText = "2 EUR"; break;
+                    case 100: tipoText = "1 EUR"; break;
+                    case 50: tipoText = "50 CENT"; break;
+                    case 20: tipoText = "20 CENT"; break;
+                    case 10: tipoText = "10 CENT"; break;
+                    case 5: tipoText = "5 CENT"; break;
+                    case 2: tipoText = "2 CENT"; break;
+                    case 1: tipoText = "1 CENT"; break;
+                    default: tipoText = "DESCONHECIDO"; break;
                     }
                     text = "Tipo: " + tipoText;
-                    cv::putText(frameorig, text, cv::Point(moedas[i].xc + 90, moedas[i].yc + 20), cv::FONT_HERSHEY_SIMPLEX, 0.6, cv::Scalar(0,0,0), 2, cv::LINE_AA);
-                    cv::putText(frameorig, text, cv::Point(moedas[i].xc + 89, moedas[i].yc + 19), cv::FONT_HERSHEY_SIMPLEX, 0.6, cv::Scalar(0,0,0), 1, cv::LINE_AA);
+                    cv::putText(frameorig, text, cv::Point(moedas[i].xc + 89, moedas[i].yc + 19), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(0,0,0), 1, cv::LINE_AA);
+                    vc_desenha_bounding_box(frameorig, moedas[i]);
+                    if (height / 4 >= moedas[i].yc - 15 && height / 4 <= moedas[i].yc + 20) {
+                        desenha_linhaVerde(frameorig);
+                        if (passou.size() == 0) {
+                            passou.push_back(moedas[i]);
+                            cont++; mTotal++;
+                            switch (tipo) {
+                            case 200: m200++; soma += 2.0f; break;
+                            case 100: m100++; soma += 1.0f; break;
+                            case 50: m50++; soma += 0.5f; break;
+                            case 20: m20++; soma += 0.2f; break;
+                            case 10: m10++; soma += 0.1f; break;
+                            case 5: m5++; soma += 0.05f; break;
+                            case 2: m2++; soma += 0.02f; break;
+                            case 1: m1++; soma += 0.01f; break;
+                            }
+                        }
+                        else {
+                            int p = verificaPassouAntes(passou.data(), moedas[i], cont);
+                            if (p == 1) {
+                                passou.push_back(moedas[i]);
+                                cont++; mTotal++;
+                                switch (tipo) {
+                                case 200: m200++; soma += 2.0f; break;
+                                case 100: m100++; soma += 1.0f; break;
+                                case 50: m50++; soma += 0.5f; break;
+                                case 20: m20++; soma += 0.2f; break;
+                                case 10: m10++; soma += 0.1f; break;
+                                case 5: m5++; soma += 0.05f; break;
+                                case 2: m2++; soma += 0.02f; break;
+                                case 1: m1++; soma += 0.01f; break;
+                                }
+                            }
+                        }
+                    }
                 }
             }
-        }        std::ostringstream oss;
+        }
+        // --- Overlay de informações gerais do vídeo ---
+        auto now = std::chrono::steady_clock::now();
+        double tempo_decorrido = std::chrono::duration_cast<std::chrono::milliseconds>(now - start_time).count() / 1000.0;
+        int info_y_offset = 20;
+        int info_fontFace = cv::FONT_HERSHEY_SIMPLEX;
+        double info_fontScale = 0.55;
+        int info_thickness = 1;
+        cv::Scalar info_color(0, 0, 0); // Preto (BGR)
+        std::ostringstream info_oss;
+        info_oss << std::fixed << std::setprecision(2);
+        info_oss << "Tempo: " << tempo_decorrido << "s | Resolucao: " << width << "x" << height;
+        cv::putText(frameorig, info_oss.str(), cv::Point(20, info_y_offset), info_fontFace, info_fontScale, info_color, info_thickness, cv::LINE_AA);
+        info_y_offset += 18;
+        info_oss.str(""); info_oss.clear();
+        info_oss << "Frame rate: " << fps << " fps";
+        cv::putText(frameorig, info_oss.str(), cv::Point(20, info_y_offset), info_fontFace, info_fontScale, info_color, info_thickness, cv::LINE_AA);
+        info_y_offset += 18;
+        info_oss.str(""); info_oss.clear();
+        info_oss << "Total de frames: " << totalFrames;
+        cv::putText(frameorig, info_oss.str(), cv::Point(20, info_y_offset), info_fontFace, info_fontScale, info_color, info_thickness, cv::LINE_AA);
+        info_y_offset += 18;
+        info_oss.str(""); info_oss.clear();
+        info_oss << "Frame atual: " << currentFrame << "/" << totalFrames;
+        cv::putText(frameorig, info_oss.str(), cv::Point(20, info_y_offset), info_fontFace, info_fontScale, info_color, info_thickness, cv::LINE_AA);
+        info_y_offset += 18;
+
+        std::ostringstream oss;
         oss << std::fixed << std::setprecision(2) << soma;
-        
-        // Substituir bloco de texto estatístico por OpenCV putText
-        int y_offset = 30;
+        int y_offset = info_y_offset + 10;
         int fontFace = cv::FONT_HERSHEY_SIMPLEX;
         double fontScale = 0.6;
         int thickness = 1;
         cv::Scalar color(0, 0, 0); // Preto (BGR)
-        
         std::string text = "TOTAL DE MOEDAS: " + std::to_string(mTotal);
         cv::putText(frameorig, text, cv::Point(20, y_offset), fontFace, fontScale, color, thickness, cv::LINE_AA);
         y_offset += 20;
-        text = "TOTAL: " + oss.str();
+        text = "VALOR ACUMULADO: " + oss.str();
         cv::putText(frameorig, text, cv::Point(20, y_offset), fontFace, fontScale, color, thickness, cv::LINE_AA);
         y_offset += 20;
         text = "2 EUR: " + std::to_string(m200);

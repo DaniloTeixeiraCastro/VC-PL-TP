@@ -13,6 +13,7 @@
 #endif
 
 // FUNÇÕES: ALOCAR E LIBERTAR UMA IMAGEM
+// Aloca memória para uma nova imagem IVC
 IVC* vc_image_new(int width, int height, int channels, int levels) {
     IVC* image = (IVC*)malloc(sizeof(IVC));
     if (image == NULL) return NULL;
@@ -32,6 +33,7 @@ IVC* vc_image_new(int width, int height, int channels, int levels) {
     return image;
 }
 
+// Liberta memória de uma imagem IVC
 IVC* vc_image_free(IVC* image) {
     if (image != NULL) {
         if (image->data != NULL) free(image->data);
@@ -40,7 +42,7 @@ IVC* vc_image_free(IVC* image) {
     return NULL;
 }
 
-// FUNÇÃO PARA CONVERTER DE BGR PARA HSV
+// Conversão de imagem BGR para HSV (compatível com OpenCV)
 int vc_bgr_to_hsv(IVC* src, IVC* dst) {
     unsigned char* datasrc = (unsigned char*)src->data;
     unsigned char* datadst = (unsigned char*)dst->data;
@@ -101,6 +103,7 @@ int vc_bgr_to_hsv(IVC* src, IVC* dst) {
     return 1;
 }
 
+// Segmentação HSV: converte frame BGR para HSV e aplica limiares para obter imagem binária
 int idBlobs(cv::Mat frameIn, cv::Mat frameOut, int hueMin, int hueMax, float satMin, float satMax, int valueMin, int valueMax) {
     if (frameIn.empty() || frameOut.empty() || frameIn.cols <= 0 || frameIn.rows <= 0 || frameIn.channels() != 3 ||
         frameIn.cols != frameOut.cols || frameIn.rows != frameOut.rows) return 0;
@@ -145,11 +148,13 @@ int idBlobs(cv::Mat frameIn, cv::Mat frameOut, int hueMin, int hueMax, float sat
     return 1;
 }
 
+// Verifica se uma moeda já foi contada anteriormente (evitar duplicados)
 int verificaPassouAntes(OVC* passou, OVC moedas, int cont) {
     if (cont == 0) return 1;
     return (moedas.xc < passou[cont - 1].xc - 10 || moedas.xc > passou[cont - 1].xc + 10) ? 1 : 0;
 }
 
+// Classifica o tipo de moeda com base em área, perímetro, circularidade e cor média
 int idMoeda(int area, int perimeter, float circularity, VEC3UC meanColor) {
     
     if (area > 35000 || area < 5000) return 0;
@@ -166,6 +171,7 @@ int idMoeda(int area, int perimeter, float circularity, VEC3UC meanColor) {
     else return 0;
 }
 
+// Escreve estatísticas das moedas para ficheiro
 void escreverInfo(FILE* fp, int cont, int mTotal, int m200, int m100, int m50, int m20, int m10, int m5, int m2, int m1, const char* videofile) {
     if (!fp) return;
     time_t t = time(NULL);
@@ -186,6 +192,7 @@ void escreverInfo(FILE* fp, int cont, int mTotal, int m200, int m100, int m50, i
     fprintf(fp, "TOTAL:  %.2f EUR\n\n", valorTotal);
 }
 
+// Etiquetagem de blobs (componentes conectados) numa imagem binária
 OVC* vc_binary_blob_labelling(cv::Mat src, cv::Mat dst, int* nlabels) {
     if (src.empty() || dst.empty() || src.cols <= 0 || src.rows <= 0 || src.channels() != 1 ||
         src.cols != dst.cols || src.rows != dst.rows || dst.channels() != 1) return NULL;
@@ -218,6 +225,7 @@ OVC* vc_binary_blob_labelling(cv::Mat src, cv::Mat dst, int* nlabels) {
     return blobs;
 }
 
+// Calcula propriedades dos blobs (área, perímetro, centro, etc.)
 int vc_binary_blob_info(cv::Mat src, OVC* blobs, int nblobs) {
     if (src.empty() || src.cols <= 0 || src.rows <= 0 || src.channels() != 1) return 0;
     
@@ -237,6 +245,7 @@ int vc_binary_blob_info(cv::Mat src, OVC* blobs, int nblobs) {
     return result;
 }
 
+// Desenha bounding box e centro de massa de um blob sobre uma imagem OpenCV
 int vc_desenha_bounding_box(cv::Mat src, OVC blobs) {
     if (src.empty() || src.cols <= 0 || src.rows <= 0 || src.channels() != 3) return 0;
     
@@ -257,6 +266,7 @@ int vc_desenha_bounding_box(cv::Mat src, OVC blobs) {
     return result;
 }
 
+// Desenha linha verde na imagem (linha de validação)
 int desenha_linhaVerde(cv::Mat frame) {
     if (frame.empty() || frame.cols <= 0 || frame.rows <= 0 || frame.channels() != 3) return 0;
     
@@ -281,6 +291,7 @@ int desenha_linhaVerde(cv::Mat frame) {
     return result;
 }
 
+// Desenha linha vermelha na imagem (linha de referência)
 int desenha_linhaVermelha(cv::Mat frame) {
     if (frame.empty() || frame.cols <= 0 || frame.rows <= 0 || frame.channels() != 3) return 0;
     
@@ -344,7 +355,7 @@ int vc_hsv_segmentation(IVC* src, IVC* dst, int hmin, int hmax, int smin, int sm
 
 // FUNÇÕES DE MORFOLOGIA PARA DILATAÇÃO E EROSÃO
 
-// Dilatação binária (kernel quadrado de tamanho kernel_size)
+// Dilatação binária (expande regiões brancas)
 int vc_dilate(IVC* src, IVC* dst, int kernel_size)
 {
     if (!src || !dst || src->channels != 1 || dst->channels != 1) return 0;
@@ -377,7 +388,7 @@ int vc_dilate(IVC* src, IVC* dst, int kernel_size)
     return 1;
 }
 
-// Erosão binária (kernel quadrado de tamanho kernel_size)
+// Erosão binária (contrai regiões brancas)
 int vc_erode(IVC* src, IVC* dst, int kernel_size)
 {
     if (!src || !dst || src->channels != 1 || dst->channels != 1) return 0;
@@ -658,8 +669,6 @@ int vc_draw_bounding_box(IVC* src, OVC blobs) {
     int y1 = blobs.y;
     int x2 = blobs.x + blobs.width - 1;
     int y2 = blobs.y + blobs.height - 1;
-
-    // Removido o clamping dos limites da imagem para garantir que a linha cobre o contorno real
     
     // Cor vermelha
     int color[3] = { 0, 0, 255 };
@@ -877,7 +886,7 @@ void mediaCorROI(const IVC* ivcImg, int x, int y, int width, int height, VEC3UC*
     meanColor->r = (unsigned char)(sumR / count);
 }
 
-// FUNÇÃO para calcular o tempo decorrido
+// Cronómetro para medir tempo total de execução
 void vc_timer(void) {
     static bool running = false;
     static std::chrono::steady_clock::time_point previousTime = std::chrono::steady_clock::now();

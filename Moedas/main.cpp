@@ -1,3 +1,7 @@
+// main.cpp
+// Programa principal para deteção e classificação de moedas em vídeo usando OpenCV e funções auxiliares personalizadas.
+// Comentários detalhados em PT-PT.
+
 #define _CRT_SECURE_NO_WARNINGS
 
 #include <opencv2/opencv.hpp>
@@ -11,12 +15,16 @@
 #include <chrono>
 
 int main(int argc, const char* argv[]) {
-    // Inicia o timer
+    // Inicia o timer (apenas para mostrar tempo total no final)
     vc_timer();
+    // Marca o tempo de início para overlay em tempo real
     auto start_time = std::chrono::steady_clock::now();
-    std::string videofile;
-    if (argc == 2) {
 
+    // Variável para guardar o caminho do vídeo
+    std::string videofile;
+
+    // Seleção do vídeo a processar (Menu)
+    if (argc == 2) {
         videofile = argv[1];
     }
     else {
@@ -38,39 +46,43 @@ int main(int argc, const char* argv[]) {
         }
     }
 
+    // Abre o vídeo selecionado
     cv::VideoCapture capture(videofile);
     if (!capture.isOpened()) {
         std::cerr << "Erro ao abrir ficheiro!\n";
         return 1;
     }
 
+    // Obtém propriedades do vídeo
     int totalFrames = static_cast<int>(capture.get(cv::CAP_PROP_FRAME_COUNT)),
         fps = static_cast<int>(capture.get(cv::CAP_PROP_FPS)),
         width = static_cast<int>(capture.get(cv::CAP_PROP_FRAME_WIDTH)),
         height = static_cast<int>(capture.get(cv::CAP_PROP_FRAME_HEIGHT));
 
+    // Cria janela principal
     cv::namedWindow("Detetor de moedas", cv::WINDOW_AUTOSIZE);
-
-    //--- Valores HSV fixos ---
+    //--- Cria janela Segmentação HSV ---
     //cv::namedWindow("Segmentacao HSV", cv::WINDOW_AUTOSIZE);
-    //const int hmin = 10, hmax = 75, smin = 21, smax = 255, vmin = 20, vmax = 150;
-
-
-    std::vector<OVC> passou;
+    
+    // Variáveis para contagem e estatísticas
+    std::vector<OVC> passou; // Guarda moedas já contadas
     int cont = 0, mTotal = 0;
     float soma = 0.0;
     int m200 = 0, m100 = 0, m50 = 0, m20 = 0, m10 = 0, m5 = 0, m2 = 0, m1 = 0;
 
+    // Abre ficheiro para guardar resultados
     FILE* fp = fopen("Moedas.txt", "a");
     if (!fp) {
         std::cerr << "Erro ao abrir o ficheiro de guardar moedas!\n";
         return 1;
     }
 
+    // Matriz para armazenar o frame original lido do vídeo
     cv::Mat frameorig;
     bool paused = false;
     std::cout << "Pressione 'q' para sair, 'p' para pausar.\n";
 
+    // Ciclo principal de processamento de frames
     while (true) {
         if (!paused) {
             capture >> frameorig;
@@ -80,45 +92,44 @@ int main(int argc, const char* argv[]) {
             }
         }
 
+        // Obtém o número do frame atual
         int currentFrame = static_cast<int>(capture.get(cv::CAP_PROP_POS_FRAMES));
 
+        // Cria imagem binária para segmentação
         cv::Mat framethr(frameorig.size(), CV_8UC1);
 
-        // Passar os valores fixos para a função de segmentação
-        //if (!idBlobs(frameorig, framethr, hmin, hmax, smin, smax, vmin, vmax)) {
-        //    std::cerr << "Erro na segmentação HSV!\n"; continue;
-        //}
-
+		// Mostra o frame da imagem binária segmentada
         //cv::imshow("Segmentacao HSV", framethr);
 
-        if (!idBlobs(frameorig, framethr, 10, 65, 21, 255, 20, 150)) {
+        // Segmentação HSV (deteta regiões de interesse)
+        if (!idBlobs(frameorig, framethr, 10, 75, 21, 255, 20, 150)) {
             std::cerr << "Erro na segmentação HSV!\n"; continue;
         }
 
-        // Após a segmentação HSV (framethr já contém a imagem binária)
+        // Conversão para estrutura IVC e operações morfológicas
         IVC* ivcIn = cv_mat_to_ivc(framethr);
         IVC* ivcTemp1 = vc_image_new(ivcIn->width, ivcIn->height, 1, 255);
         IVC* ivcTemp2 = vc_image_new(ivcIn->width, ivcIn->height, 1, 255);
         IVC* ivcOut = vc_image_new(ivcIn->width, ivcIn->height, 1, 255);
 
-        // Abertura: erosão seguida de dilatação
+        // Abertura: erosão seguida de dilatação (remove ruído)
         vc_erode(ivcIn, ivcTemp1, 5);
         vc_dilate(ivcTemp1, ivcTemp2, 5);
 
-        // Fecho: dilatação seguida de erosão
+        // Fecho: dilatação seguida de erosão (fecha buracos)
         vc_dilate(ivcTemp2, ivcTemp1, 5);
         vc_erode(ivcTemp1, ivcOut, 5);
 
-        // Copiar resultado de volta para o Mat do OpenCV usando memcpy
+        // Copia resultado para Mat do OpenCV
         memcpy(framethr.data, ivcOut->data, ivcOut->width * ivcOut->height * ivcOut->channels);
 
-        // Liberar memória
+        // Liberta memória temporária
         vc_image_free(ivcIn);
         vc_image_free(ivcTemp1);
         vc_image_free(ivcTemp2);
         vc_image_free(ivcOut);
 
-
+        // Etiquetagem de blobs (moedas)
         int nMoedas = 0;
         OVC* moedas = vc_binary_blob_labelling(framethr, framethr, &nMoedas);
         if (!moedas && nMoedas > 0) { std::cerr << "Erro na etiquetagem!\n"; continue; }
@@ -126,27 +137,26 @@ int main(int argc, const char* argv[]) {
             std::cerr << "Erro no cálculo de propriedades dos blobs!\n"; free(moedas); continue;
         }
 
-        desenha_linhaVermelha(frameorig);       
-            for (int i = 0; i < nMoedas; i++) {
+        // Desenha linha de referência vermelha
+        desenha_linhaVermelha(frameorig);
+        // Processa cada moeda detetada
+        for (int i = 0; i < nMoedas; i++) {
             if (moedas[i].area > 8000) {
-                // Coordenadas
+                // Mostra coordenadas, área, perímetro e circularidade
                 std::string text = "x: " + std::to_string(moedas[i].xc) + ", y: " + std::to_string(moedas[i].yc);
                 cv::putText(frameorig, text, cv::Point(moedas[i].xc + 89, moedas[i].yc - 61), cv::FONT_HERSHEY_SIMPLEX, 0.45, cv::Scalar(255,8,0), 1, cv::LINE_AA);
-                // Área
                 text = "AREA: " + std::to_string(moedas[i].area);
                 cv::putText(frameorig, text, cv::Point(moedas[i].xc + 89, moedas[i].yc - 41), cv::FONT_HERSHEY_SIMPLEX, 0.45, cv::Scalar(255,8,0), 1, cv::LINE_AA);
-                // Perímetro
                 text = "PERIMETRO: " + std::to_string(moedas[i].perimeter);
                 cv::putText(frameorig, text, cv::Point(moedas[i].xc + 89, moedas[i].yc - 21), cv::FONT_HERSHEY_SIMPLEX, 0.45, cv::Scalar(255,8,0), 1, cv::LINE_AA);
-                // Circularidade
                 text = "CIRCULARIDADE: " + std::to_string(moedas[i].circularity).substr(0, 5);
                 cv::putText(frameorig, text, cv::Point(moedas[i].xc + 89, moedas[i].yc - 1), cv::FONT_HERSHEY_SIMPLEX, 0.45, cv::Scalar(255,8,0), 1, cv::LINE_AA);
-                
+                // Calcula cor média da moeda
                 IVC* ivcFrameColor = cv_mat_to_ivc(frameorig);
                 VEC3UC meanColor;
                 mediaCorROI(ivcFrameColor, moedas[i].x, moedas[i].y, moedas[i].width, moedas[i].height, &meanColor);
                 vc_image_free(ivcFrameColor);
-                
+                // Classifica moeda
                 int tipo = idMoeda(moedas[i].area, moedas[i].perimeter, moedas[i].circularity, meanColor);
                 std::string tipoText;
                 if (tipo != 0 && moedas[i].circularity > 0.1) {
@@ -163,9 +173,12 @@ int main(int argc, const char* argv[]) {
                     }
                     text = "Tipo: " + tipoText;
                     cv::putText(frameorig, text, cv::Point(moedas[i].xc + 89, moedas[i].yc + 19), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(0,0,0), 1, cv::LINE_AA);
+                    // Desenha bounding box
                     vc_desenha_bounding_box(frameorig, moedas[i]);
+                    // Verifica se moeda passou pela linha verde
                     if (height / 4 >= moedas[i].yc - 15 && height / 4 <= moedas[i].yc + 20) {
                         desenha_linhaVerde(frameorig);
+                        // Evita contar a mesma moeda várias vezes
                         if (passou.size() == 0) {
                             passou.push_back(moedas[i]);
                             cont++; mTotal++;
@@ -201,7 +214,7 @@ int main(int argc, const char* argv[]) {
                 }
             }
         }
-        // --- Overlay de informações gerais do vídeo ---
+        // Overlay de informações gerais do vídeo (tempo, resolução, fps, etc.)
         auto now = std::chrono::steady_clock::now();
         double tempo_decorrido = std::chrono::duration_cast<std::chrono::milliseconds>(now - start_time).count() / 1000.0;
         int info_y_offset = 20;
@@ -227,6 +240,7 @@ int main(int argc, const char* argv[]) {
         cv::putText(frameorig, info_oss.str(), cv::Point(20, info_y_offset), info_fontFace, info_fontScale, info_color, info_thickness, cv::LINE_AA);
         info_y_offset += 18;
 
+        // Overlay de estatísticas das moedas
         std::ostringstream oss;
         oss << std::fixed << std::setprecision(2) << soma;
         int y_offset = info_y_offset + 10;
@@ -265,6 +279,7 @@ int main(int argc, const char* argv[]) {
         cv::putText(frameorig, text, cv::Point(20, y_offset), fontFace, fontScale, color, thickness, cv::LINE_AA);
         y_offset += 20;
 
+        // Mostra o frame processado
         cv::imshow("Detetor de moedas", frameorig);
         cv::waitKey(1);
         int key = cv::waitKey(33);
@@ -274,12 +289,16 @@ int main(int argc, const char* argv[]) {
         if (moedas) { free(moedas); moedas = NULL; }
     }
 
+    // Guarda estatísticas no ficheiro
     escreverInfo(fp, cont, mTotal, m200, m100, m50, m20, m10, m5, m2, m1, videofile.c_str());
     fclose(fp);
+    
+    // Liberta recursos e Fecha a janela de visualização do vídeo
     capture.release();
     cv::destroyWindow("Detetor de moedas");
     //cv::destroyWindow("Segmentacao HSV");
     std::cout << "Programa terminado.\n";
+    
     // Para o timer e exibe o tempo decorrido
     vc_timer();
     return 0;
